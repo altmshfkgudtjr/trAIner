@@ -1,7 +1,5 @@
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
-// head
-import GoogleTagManager from 'lib/head/GoogleTagManager';
 // components
 import ErrorBoundary from 'components/containers/commons/ErrorBoundary';
 import {
@@ -9,12 +7,10 @@ import {
   RecoilProvider,
   ThemeProvider,
   ModalProvider,
-  AuthProvider,
 } from 'components/containers/commons/providers';
-import { SpriteIcons, SpriteEmojis } from 'ruix/components/icons';
+import { SpriteIcons, SpriteEmojis } from 'sjds/components/icons';
 // hooks
 import useMetaData from 'hooks/commons/useMetaData';
-import useGoogleTagManager from 'hooks/event/useGoogleTagManager';
 // lib
 import * as cookieUtils from 'utils/helpers/cookie';
 import GlobalStyles from 'lib/GlobalStyles';
@@ -29,7 +25,6 @@ const App = ({ Component, pageProps }: CustomAppProps) => {
   const [themeType, setThemeType] = useState(pageProps.theme);
 
   const { MetaTitle } = useMetaData();
-  useGoogleTagManager();
 
   /** 공통 레이아웃 적용 */
   const getLayout = Component.getLayout || (page => page);
@@ -41,7 +36,6 @@ const App = ({ Component, pageProps }: CustomAppProps) => {
 
   return (
     <>
-      <GoogleTagManager nonce={pageProps.nonce} />
       {/* ------------------------------ Head ------------------------------ */}
       <Head>
         <meta
@@ -52,18 +46,16 @@ const App = ({ Component, pageProps }: CustomAppProps) => {
       <MetaTitle content={`나의 부동산 투자 포트폴리오`} />
       {/* ------------------------------ Main ------------------------------ */}
       <QueryProvider>
-        <AuthProvider>
-          <RecoilProvider>
-            <ThemeProvider themeType={themeType}>
-              {/* Style */}
-              <GlobalStyles />
-              {/* App */}
-              <ErrorBoundary>{getLayout(<Component {...pageProps} />)}</ErrorBoundary>
-              {/* Modal */}
-              <ModalProvider />
-            </ThemeProvider>
-          </RecoilProvider>
-        </AuthProvider>
+        <RecoilProvider>
+          <ThemeProvider themeType={themeType}>
+            {/* Style */}
+            <GlobalStyles />
+            {/* App */}
+            <ErrorBoundary>{getLayout(<Component {...pageProps} />)}</ErrorBoundary>
+            {/* Modal */}
+            <ModalProvider />
+          </ThemeProvider>
+        </RecoilProvider>
       </QueryProvider>
       {/* ------------------------------ Icons ------------------------------ */}
       <SpriteIcons />

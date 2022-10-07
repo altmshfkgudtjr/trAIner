@@ -1,10 +1,9 @@
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
 // components
-import Logo from 'components/atoms/Logo';
-import { PillButton } from 'ruix/components/buttons';
+import { OutlineButton } from 'sjds/components/buttons';
 // styles
-import { typo, mediaQuery } from 'ruix';
+import { typo, mediaQuery } from 'sjds';
 
 const ErrorPage = ({ statusCode }) => {
   const router = useRouter();
@@ -13,7 +12,6 @@ const ErrorPage = ({ statusCode }) => {
 
   return (
     <Wrapper>
-      <Logo h={48} />
       <MessageBox>
         {statusCode && (
           <>
@@ -32,20 +30,20 @@ const ErrorPage = ({ statusCode }) => {
       <ButtonWrapper>
         {statusCode && (
           <>
-            <Button size="L" colorType="Primary" onClick={onBack}>
+            <Button size="Large" onClick={onBack}>
               되돌아가기
             </Button>
-            <Button forwardedAs="a" href="/" size="L" colorType="Primary" isFill>
+            <Button forwardedAs="a" href="/" size="Large">
               홈으로
             </Button>
           </>
         )}
         {!statusCode && (
           <>
-            <Button forwardedAs="a" href="" size="L" colorType="Primary" onClick={onBack}>
+            <Button forwardedAs="a" href="" size="Large" onClick={onBack}>
               새로고침
             </Button>
-            <Button forwardedAs="a" href="/" size="L" colorType="Primary" isFill>
+            <Button forwardedAs="a" href="/" size="Large">
               홈으로
             </Button>
           </>
@@ -105,6 +103,6 @@ const ButtonWrapper = styled.section`
   }
 `;
 
-const Button = styled(PillButton)``;
+const Button = styled(OutlineButton)``;
 
 export default ErrorPage;

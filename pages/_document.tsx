@@ -2,7 +2,6 @@ import Document, { Html, Head, Main, NextScript, DocumentContext } from 'next/do
 import { ServerStyleSheet } from 'styled-components';
 // head
 import DefaultMeta from 'lib/head/DefaultMeta';
-import { GoogleTagManagerNoScript } from 'lib/head/GoogleTagManager';
 
 class MyDocument extends Document {
   /*======= styled-components SSR 적용 =======*/
@@ -45,19 +44,9 @@ class MyDocument extends Document {
           <DefaultMeta />
           <link rel="shortcut icon" href={``} />
           <link rel="canonical" href={process.env.NEXT_PUBLIC_DEFAULT_HOST} />
-          <link
-            rel="preconnect"
-            href={process.env.NEXT_PUBLIC_SEOUL_API_SERVER}
-            crossOrigin="true"
-          />
-          <link
-            rel="preconnect"
-            href={process.env.NEXT_PUBLIC_SEJONG_API_SERVER}
-            crossOrigin="true"
-          />
+          <link rel="preconnect" href={process.env.NEXT_PUBLIC_API_SERVER} crossOrigin="true" />
         </Head>
         <body>
-          <GoogleTagManagerNoScript />
           <Main />
           <NextScript />
         </body>
