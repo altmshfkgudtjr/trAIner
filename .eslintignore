@@ -1,0 +1,9 @@
+# ------------------------------------ Assets ----------------------------------- #
+node_modules/
+tsconfig.json
+jest.config.js
+jest.setup.js
+
+# ------------------------------------- Next ------------------------------------ #
+next.config.js
+next.export.config.js
