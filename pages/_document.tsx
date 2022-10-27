@@ -42,7 +42,6 @@ class MyDocument extends Document {
           <meta httpEquiv="Pragma" content="no-cache" />
           <meta httpEquiv="Expires" content="-1" />
           <DefaultMeta />
-          <link rel="shortcut icon" href={``} />
           <link rel="canonical" href={process.env.NEXT_PUBLIC_DEFAULT_HOST} />
           <link rel="preconnect" href={process.env.NEXT_PUBLIC_API_SERVER} crossOrigin="true" />
         </Head>

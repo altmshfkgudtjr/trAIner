@@ -4,15 +4,21 @@ import Head from 'next/head';
  * 메타 데이터 Hook
  */
 const useMetaData = () => {
-  const MetaTitle = ({ content }) => {
+  const MetaTitle = ({ content, showBrandName = true }) => {
+    let title = content ? content : '';
+    title += showBrandName
+      ? content
+        ? ` - ${process.env.NEXT_PUBLIC_BRAND_KOR}`
+        : process.env.NEXT_PUBLIC_BRAND_KOR
+      : '';
+    title = title ? title : process.env.NEXT_PUBLIC_BRAND_KOR;
+
     return (
       <Head>
-        <title>
-          {process.env.NEXT_PUBLIC_BRAND_KOR} | {content}
-        </title>
-        <meta property="og:title" content={`${process.env.NEXT_PUBLIC_BRAND_KOR} | ${content}`} />
-        <meta name="twitter:title" content={`${process.env.NEXT_PUBLIC_BRAND_KOR} | ${content}`} />
-        <meta name="facebook:title" content={`${process.env.NEXT_PUBLIC_BRAND_KOR} | ${content}`} />
+        <title>{title}</title>
+        <meta property="og:title" content={title} />
+        <meta name="twitter:title" content={title} />
+        <meta name="facebook:title" content={title} />
       </Head>
     );
   };
@@ -29,7 +35,7 @@ const useMetaData = () => {
     </Head>
   );
 
-  const MetaImage = ({ content = `service/og-thumbnail.png` }) => (
+  const MetaImage = ({ content }) => (
     <Head>
       <meta property="og:image" content={content} />
       <meta name="twitter:image" content={content} />

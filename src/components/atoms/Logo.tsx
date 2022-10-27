@@ -1,30 +1,24 @@
 import styled from 'styled-components';
+// styles
+import { mediaQuery } from 'tds';
 
 /**
  * 로고
  * @param props
- * @param props.type 타입
  * @param props.w 가로 길이
  * @param props.h 세로 길이
- * @param props.isLinking a 태그 여부
  */
-const Logo = ({ type = 'Black', w, h, isLinking = true }: Props) => {
-  const logoURL =
-    type === 'Black'
-      ? `${process.env.NEXT_PUBLIC_ASSET_HOST}images/logo_black.png`
-      : `${process.env.NEXT_PUBLIC_ASSET_HOST}images/logo_white.png`;
-
-  const Layout = ({ children }) => {
-    if (isLinking) {
-      return <Link href="">{children}</Link>;
-    }
-    return <Wrapper>{children}</Wrapper>;
-  };
-
+const Logo = ({ w, h }: Props) => {
   return (
-    <Layout>
-      <Image src={logoURL} alt={`${process.env.NEXT_PUBLIC_BRAND_ENG} 로고`} w={w} h={h} />
-    </Layout>
+    <Link href="/">
+      <Image src={`/logo/primary.png`} alt={`${process.env.NEXT_PUBLIC_BRAND_ENG}`} w={w} h={h} />
+      <ImageMobile
+        src={`/logo/primary-simple.png`}
+        alt={`${process.env.NEXT_PUBLIC_BRAND_ENG}`}
+        w={w}
+        h={h}
+      />
+    </Link>
   );
 };
 
@@ -34,25 +28,29 @@ const Link = styled.a`
   justify-content: center;
 `;
 
-const Wrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
 const Image = styled.img<{
   w?: number;
   h?: number;
 }>`
-  width: ${({ w }) => (w ? `${w}px` : '100%')};
-  height: ${({ h }) => (h ? `${h}px` : '100%')};
+  display: none;
+  max-width: ${({ w }) => (w ? `${w}px` : 'auto')};
+  max-height: ${({ h }) => (h ? `${h}px` : 'auto')};
+
+  ${mediaQuery.medium} {
+    display: block;
+  }
+`;
+const ImageMobile = styled(Image)`
+  display: block;
+
+  ${mediaQuery.medium} {
+    display: none;
+  }
 `;
 
 type Props = {
-  type?: 'Black' | 'White';
   w?: number;
   h?: number;
-  isLinking?: boolean;
 };
 
 export default Logo;

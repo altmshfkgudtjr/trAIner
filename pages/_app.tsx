@@ -43,7 +43,7 @@ const App = ({ Component, pageProps }: CustomAppProps) => {
           content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=yes, minimal-ui, viewport-fit=cover, shrink-to-fit=no"
         />
       </Head>
-      <MetaTitle content={`나의 부동산 투자 포트폴리오`} />
+      <MetaTitle content="트레이너" showBrandName={false} />
       {/* ------------------------------ Main ------------------------------ */}
       <QueryProvider>
         <RecoilProvider>
@@ -72,37 +72,6 @@ App.getInitialProps = async ({ ctx, Component }) => {
 
   // CSP 설정
   const nonce = initRandomChar(12);
-  ctx?.res?.setHeader(
-    'Content-Security-Policy',
-    [
-      [
-        'script-src',
-        'self',
-        process.env.NODE_ENV === 'production' ? '' : 'unsafe-eval',
-        '',
-        `nonce-${nonce}`,
-        'https://*.googletagmanager.com',
-        'https://*.googleapis.com',
-        'https://*.tinymce.com',
-        'https://*.tiny.cloud',
-      ],
-      [
-        'connect-src',
-        'self',
-        'http://*.run.app',
-        'http://*.seoulpi.io',
-        'https://*.google-analytics.com',
-        'https://*.googleapis.com',
-        'https://*.tinymce.com',
-        'https://*.tiny.cloud',
-      ],
-    ].reduce((prev, [key, ...policy]) => {
-      return `${prev}${key} ${policy
-        .filter(Boolean)
-        .map(src => (src.startsWith('http') ? `${src}` : `'${src}'`))
-        .join(' ')};`;
-    }, ''),
-  );
   Object.assign(pageProps, { nonce });
 
   // Theme 설정
