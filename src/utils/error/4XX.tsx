@@ -6,13 +6,13 @@ import { ACCESS_TOKEN, REFRESH_TOKEN } from 'utils/constants/token';
  * 상태코드 에러 핸들러
  * @code 400
  */
-export const handle400 = error => {};
+export const handle400 = () => {};
 
 /**
  * 상태코드 에러 핸들러
  * @code 401
  */
-export const handle401 = error => {
+export const handle401 = () => {
   storageUtils.removeLocalStorage(ACCESS_TOKEN);
   storageUtils.removeLocalStorage(REFRESH_TOKEN);
 };
@@ -21,7 +21,7 @@ export const handle401 = error => {
  * 상태코드 에러 핸들러
  * @code 404
  */
-export const handle404 = error => {};
+export const handle404 = () => {};
 
 const Error_4XX = {
   400: {

@@ -1,15 +1,8 @@
 import styled from 'styled-components';
-import { useRouter } from 'next/router';
-// components
-import { OutlineButton } from 'tds/components/buttons';
 // styles
-import { typo, mediaQuery } from 'tds';
+import { typo } from 'tds';
 
 const ErrorPage = ({ statusCode }) => {
-  const router = useRouter();
-
-  const onBack = () => router.back();
-
   return (
     <Wrapper>
       <MessageBox>
@@ -27,28 +20,6 @@ const ErrorPage = ({ statusCode }) => {
           </>
         )}
       </MessageBox>
-      <ButtonWrapper>
-        {statusCode && (
-          <>
-            <Button size="Large" onClick={onBack}>
-              되돌아가기
-            </Button>
-            <Button forwardedAs="a" href="/" size="Large">
-              홈으로
-            </Button>
-          </>
-        )}
-        {!statusCode && (
-          <>
-            <Button forwardedAs="a" href="" size="Large" onClick={onBack}>
-              새로고침
-            </Button>
-            <Button forwardedAs="a" href="/" size="Large">
-              홈으로
-            </Button>
-          </>
-        )}
-      </ButtonWrapper>
     </Wrapper>
   );
 };
@@ -82,27 +53,12 @@ const MessageBox = styled.section`
 
   h1 {
     ${typo.headline1};
-    color: ${({ theme }) => theme.primary_600};
+    color: ${({ theme }) => theme.primary};
   }
 
   p {
     ${typo.subtitle1};
   }
 `;
-
-const ButtonWrapper = styled.section`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  flex-direction: column;
-  margin-top: 20px;
-
-  ${mediaQuery.medium} {
-    flex-direction: row;
-  }
-`;
-
-const Button = styled(OutlineButton)``;
 
 export default ErrorPage;

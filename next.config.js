@@ -64,11 +64,7 @@ const nextConfig = {
 
 	// 컴파일러 설정
 	compiler: {
-		styledComponents: {
-			displayName: isProd ? false : true,
-			ssr: true,
-			fiename: isProd ? false : true,
-		}
+		styledComponents: true
 	},
 
   // Webpack 5 설정

@@ -1,6 +1,4 @@
 import Head from "next/head";
-// utils
-import { SERVICE_LOGO_IMAGE_URL } from 'utils/constants/url';
 
 /** Default 메타 데이터 */
 const DefaultMeta = () => {
@@ -16,19 +14,19 @@ const DefaultMeta = () => {
       <meta property="og:site_name" content={process.env.NEXT_PUBLIC_BRAND_KOR} />
       <meta property="og:title" content={`${process.env.NEXT_PUBLIC_BRAND_ENG} | 나의 부동산 투자 포트폴리오`} />
       <meta property="og:description" content={`나의 부동산 투자 포트폴리오, ${process.env.NEXT_PUBLIC_BRAND_KOR}`} />
-      <meta property="og:image" content={`${SERVICE_LOGO_IMAGE_URL}/primary-simple.png`} />
+      <meta property="og:image" content={`logo/primary-simple.png`} />
       {/* ------------------------ Twitter ------------------------ */}
       <meta name="twitter:card" content={`나의 부동산 투자 포트폴리오, ${process.env.NEXT_PUBLIC_BRAND_KOR}`} />
       <meta name="twitter:domain" content={process.env.NEXT_PUBLIC_DEFAULT_HOST} />
       <meta name="twitter:title" content={`${process.env.NEXT_PUBLIC_BRAND_ENG} | 나의 부동산 투자 포트폴리오`} />
       <meta name="twitter:description" content={`나의 부동산 투자 포트폴리오, ${process.env.NEXT_PUBLIC_BRAND_KOR}`} />
-      <meta name="twitter:image" content={`${SERVICE_LOGO_IMAGE_URL}/primary-simple.png`} />
+      <meta name="twitter:image" content={`logo/primary-simple.png`} />
       {/* ------------------------ Facebook ----------------------- */}
       <meta name="facebook:card" content={`나의 부동산 투자 포트폴리오, ${process.env.NEXT_PUBLIC_BRAND_KOR}`} />
       <meta name="twitter:domain" content={process.env.NEXT_PUBLIC_DEFAULT_HOST} />
       <meta name="facebook:title" content={`${process.env.NEXT_PUBLIC_BRAND_ENG} | 나의 부동산 투자 포트폴리오`} />
       <meta name="facebook:description" content={`나의 부동산 투자 포트폴리오, ${process.env.NEXT_PUBLIC_BRAND_KOR}`} />
-      <meta name="facebook:image" content={`${SERVICE_LOGO_IMAGE_URL}/primary-simple.png`} />
+      <meta name="facebook:image" content={`logo/primary-simple.png`} />
     </Head>
   );
 };

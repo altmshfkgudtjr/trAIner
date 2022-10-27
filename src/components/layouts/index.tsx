@@ -2,8 +2,6 @@ import styled from 'styled-components';
 // components
 import Sidebar from 'components/containers/Sidebar';
 import HeaderLayout from 'components/containers/headers';
-import MainHeader from 'components/containers/headers/Main';
-import MobileMainHeader from 'components/containers/headers/MobileMain';
 // styles
 import { mediaQuery } from 'tds';
 // types
@@ -18,8 +16,8 @@ import type { ReactNode, PropsWithChildren } from 'react';
  */
 const Layout = ({
   isSide = false,
-  desktopHeader = <MainHeader />,
-  mobileHeader = <MobileMainHeader />,
+  desktopHeader = <></>,
+  mobileHeader = <></>,
   children,
 }: PropsWithChildren<Props>) => {
   return (

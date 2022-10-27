@@ -14,13 +14,12 @@ const GlobalStyles = createGlobalStyle`
 
 	body {
 		font-family: Pretendard, -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', 'Roboto', 'Segoe UI',sans-serif;
-		background-color: ${({ theme }) => theme.surface};
+		background-color: ${({ theme }) => theme.background.bg1};
 		transition: background-color 0.2s ease-in, color 0.2s ease-in;
 	}
  
 	* {
 		box-sizing: border-box;
-		color: ${({ theme }) => theme.text.surface_high};
 		-webkit-tap-highlight-color: transparent;
 
 		&::before,

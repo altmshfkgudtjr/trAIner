@@ -29,9 +29,7 @@ const useMetaData = () => {
     </Head>
   );
 
-  const MetaImage = ({
-    content = `${process.env.NEXT_PUBLIC_ASSET_HOST}/img/class/classu.png`,
-  }) => (
+  const MetaImage = ({ content = `service/og-thumbnail.png` }) => (
     <Head>
       <meta property="og:image" content={content} />
       <meta name="twitter:image" content={content} />

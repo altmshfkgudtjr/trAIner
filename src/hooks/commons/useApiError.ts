@@ -8,10 +8,10 @@ const commonHandler = error => {
   axiosErrorLogFormat(error);
 };
 
-/**
+/**d
  * 기본 에러 핸들러
  */
-const defaultHandler = error => {};
+const defaultHandler = () => {};
 
 /**
  * 기본 에러 핸들러
@@ -50,7 +50,7 @@ const apiErrorHandler = (handlers?: any) => {
         break;
       default:
         // 우선순위 5. 어디에서도 정의되지 못한 에러를 처리하는 핸들러
-        erroHandlers.default(error);
+        erroHandlers.default();
     }
 
     // 공통 처리 로직 수행

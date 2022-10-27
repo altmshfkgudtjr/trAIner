@@ -13,11 +13,11 @@ const Symbol = ({ type = 'Color', w, h, isLinking = true, isBackground = false }
   const symbolURL =
     type === 'Color'
       ? isBackground
-        ? `${process.env.NEXT_PUBLIC_ASSET_HOST}images/icon_color.png`
-        : `${process.env.NEXT_PUBLIC_ASSET_HOST}images/symbol_color.png`
+        ? `logo/icon_color.png`
+        : `logo/symbol_color.png`
       : isBackground
-      ? `${process.env.NEXT_PUBLIC_ASSET_HOST}images/icon_white.png`
-      : `${process.env.NEXT_PUBLIC_ASSET_HOST}images/symbol_white.png`;
+      ? `logo/icon_white.png`
+      : `logo/symbol_white.png`;
 
   const Layout = ({ children }) => {
     if (isLinking) {
