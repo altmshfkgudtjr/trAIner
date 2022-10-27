@@ -2,8 +2,8 @@ import styled, { css, useTheme } from 'styled-components';
 import Link from 'next/link';
 import { useState } from 'react';
 // components
-import { Icon } from 'sjds/components/icons';
-import { lib, typo } from 'sjds';
+import { Icon } from 'tds/components/icons';
+import { lib, typo } from 'tds';
 // types
 import type { PropsWithChildren } from 'react';
 

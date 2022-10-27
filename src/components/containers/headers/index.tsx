@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import styled from 'styled-components';
 // styles
-import { mediaQuery } from 'sjds';
+import { mediaQuery } from 'tds';
 
 /**
  * 헤더 레이아웃

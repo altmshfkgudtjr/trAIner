@@ -5,7 +5,7 @@ import HeaderLayout from 'components/containers/headers';
 import MainHeader from 'components/containers/headers/Main';
 import MobileMainHeader from 'components/containers/headers/MobileMain';
 // styles
-import { mediaQuery } from 'sjds';
+import { mediaQuery } from 'tds';
 // types
 import type { ReactNode, PropsWithChildren } from 'react';
 

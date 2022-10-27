@@ -63,9 +63,12 @@ const nextConfig = {
   },
 
 	// 컴파일러 설정
-  swcMinify: true,
 	compiler: {
-		styledComponents: true,
+		styledComponents: {
+			displayName: isProd ? false : true,
+			ssr: true,
+			fiename: isProd ? false : true,
+		}
 	},
 
   // Webpack 5 설정

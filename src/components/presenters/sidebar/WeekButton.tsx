@@ -1,9 +1,9 @@
 import styled, { css } from 'styled-components';
 import Link from 'next/link';
 // components
-import { FillButton } from 'sjds/components/buttons';
+import { FillButton } from 'tds/components/buttons';
 // styles
-import { typo, lib } from 'sjds';
+import { typo, lib } from 'tds';
 
 /**
  * 주차 버튼

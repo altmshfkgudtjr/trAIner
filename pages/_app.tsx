@@ -8,7 +8,7 @@ import {
   ThemeProvider,
   ModalProvider,
 } from 'components/containers/commons/providers';
-import { SpriteIcons, SpriteEmojis } from 'sjds/components/icons';
+import { SpriteIcons, SpriteEmojis } from 'tds/components/icons';
 // hooks
 import useMetaData from 'hooks/commons/useMetaData';
 // lib

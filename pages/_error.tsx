@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
 // components
-import { OutlineButton } from 'sjds/components/buttons';
+import { OutlineButton } from 'tds/components/buttons';
 // styles
-import { typo, mediaQuery } from 'sjds';
+import { typo, mediaQuery } from 'tds';
 
 const ErrorPage = ({ statusCode }) => {
   const router = useRouter();

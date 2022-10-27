@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 // styles
-import { typo } from 'sjds';
+import { typo } from 'tds';
 
 /**
  * 사이드바 뱃지

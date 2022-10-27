@@ -6,7 +6,7 @@ import * as modals from 'components/containers/commons/modals';
 // hooks
 import useModal from 'hooks/dom/useModal';
 // styles
-import { zIndex, animations } from 'sjds';
+import { zIndex, animations } from 'tds';
 // types
 import type { ModalOptions } from 'store/system/modal';
 

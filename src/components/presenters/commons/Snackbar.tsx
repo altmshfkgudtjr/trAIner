@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import { useState, useEffect } from 'react';
 // styles
-import { animations, boxShadow, typo } from 'sjds';
+import { animations, boxShadow, typo } from 'tds';
 // types
 import { Snackbar as SnackbarInfo, SnackbarType } from 'store/system/snackbar';
 import { SnackbarPosition } from 'components/containers/providers/SnackbarProvider';

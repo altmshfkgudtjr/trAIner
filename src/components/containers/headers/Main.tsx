@@ -4,11 +4,11 @@ import { useRecoilValue } from 'recoil';
 // components
 import Symbol from 'components/atoms/Symbol';
 import Logo from 'components/atoms/Logo';
-import { TextButton } from 'sjds/components/buttons';
+import { TextButton } from 'tds/components/buttons';
 // store
 import themeState from 'store/system/theme';
 // styles
-import { mediaQuery, zIndex } from 'sjds';
+import { mediaQuery, zIndex } from 'tds';
 
 const MainHeader = () => {
   const currentTheme = useRecoilValue(themeState);

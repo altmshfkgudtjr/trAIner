@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 // styles
-import { mediaValue, mediaQuery } from 'sjds';
+import { mediaValue, mediaQuery } from 'tds';
 
 /**
  * 메인 레이아웃

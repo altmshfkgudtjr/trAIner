@@ -6,7 +6,7 @@ import themeState, { themeModeState, themeSystemState } from 'store/system/theme
 // lib
 import * as cookieUtils from 'utils/cookie';
 // styles
-import themePalette from 'sjds/lib/palette';
+import themePalette from 'tds/lib/palette';
 // types
 import type { PropsWithChildren } from 'react';
 

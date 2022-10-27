@@ -4,14 +4,14 @@ import Link from 'next/link';
 import { useRecoilState } from 'recoil';
 // components
 import Logo from 'components/atoms/Logo';
-import { TextButton } from 'sjds/components/buttons';
-import { Icon } from 'sjds/components/icons';
+import { TextButton } from 'tds/components/buttons';
+import { Icon } from 'tds/components/icons';
 // store
 import uiState from 'store/system/ui';
 // hooks
 import useScrollHeader from 'hooks/dom/useScrollHeader';
 // styles
-import { margin, mediaQuery, zIndex } from 'sjds';
+import { margin, mediaQuery, zIndex } from 'tds';
 
 /** 모바일 메인 헤더 */
 const MobileMainHeader = () => {

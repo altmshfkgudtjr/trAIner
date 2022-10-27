@@ -3,7 +3,7 @@ import { useRecoilValue } from 'recoil';
 // store
 import uiState from 'store/system/ui';
 // styles
-import { mediaQuery, zIndex } from 'sjds';
+import { mediaQuery, zIndex } from 'tds';
 
 /** 사이드 레이아웃 */
 const SideLayout = ({ children }) => {

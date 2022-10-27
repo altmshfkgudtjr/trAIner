@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 // styles
-import { mediaQuery } from 'sjds';
+import { mediaQuery } from 'tds';
 
 /**
  * 대시보드 레이아웃
