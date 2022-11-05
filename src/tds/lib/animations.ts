@@ -18,6 +18,41 @@ export const moveInTop = (v = '-2vh') => keyframes`
 	to { transform: translate3d(0, 0, 0) }
 `;
 
+export const moveOutTop = (v = '-2vh') => keyframes`
+	from { transform: translate3d(0, 0, 0) }
+	to { transform: translate3d(0, ${v}, 0) }
+`;
+
+export const moveInBottom = (v = '2vh') => keyframes`
+	from { transform: translate3d(0, ${v}, 0) }
+	to { transform: translate3d(0, 0, 0) }
+`;
+
+export const moveOutBottom = (v = '2vh') => keyframes`
+	from { transform: translate3d(0, 0, 0) }
+	to { transform: translate3d(0, ${v}, 0) }
+`;
+
+export const moveInLeft = (v = '-2vh') => keyframes`
+	from { transform: translate3d(${v}, 0, 0) }
+	to { transform: translate3d(0, 0, 0) }
+`;
+
+export const moveOutLeft = (v = '-2vh') => keyframes`
+	from { transform: translate3d(0, 0, 0) }
+	to { transform: translate3d(${v}, 0, 0) }
+`;
+
+export const moveInRight = (v = '2vh') => keyframes`
+	from { transform: translate3d(${v}, 0, 0) }
+	to { transform: translate3d(0, 0, 0) }
+`;
+
+export const moveOutRight = (v = '2vh') => keyframes`
+	from { transform: translate3d(0, 0, 0) }
+	to { transform: translate3d(${v}, 0, 0) }
+`;
+
 export const fadeIn = keyframes`
 	from { opacity: 0; }
 	to { opacity: 1; }

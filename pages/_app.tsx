@@ -7,7 +7,8 @@ import {
   RecoilProvider,
   ThemeProvider,
   ModalProvider,
-} from 'components/containers/commons/providers';
+  SnackbarProvider,
+} from 'providers';
 import { SpriteIcons, SpriteEmojis } from 'tds/components/icons';
 // hooks
 import useMetaData from 'hooks/commons/useMetaData';
@@ -54,6 +55,8 @@ const App = ({ Component, pageProps }: CustomAppProps) => {
             <ErrorBoundary>{getLayout(<Component {...pageProps} />)}</ErrorBoundary>
             {/* Modal */}
             <ModalProvider />
+            {/* Snackbar */}
+            <SnackbarProvider />
           </ThemeProvider>
         </RecoilProvider>
       </QueryProvider>

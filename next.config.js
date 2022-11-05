@@ -42,6 +42,12 @@ const nextConfig = {
     });
   },
 
+	// 실험기능
+	experimental: {
+		// [베타] app 디렉토리
+		appDir: false,
+	},
+
   // 폰트 최적화 여부
   optimizeFonts: true,
 
@@ -60,6 +66,8 @@ const nextConfig = {
   // 이미지 최적화 Domain List
   images: {
     domains: [],
+		imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    deviceSizes: [400, 828, 1200, 1920],
   },
 
 	// 컴파일러 설정
@@ -89,14 +97,6 @@ const nextConfig = {
 	
 	// Security Header 설정
 	async headers () {
-		const ContentSecurityPolicy = `
-			script-src 
-				'self'
-				'unsafe-eval'
-				https://maps.googleapis.com
-				https://cdn.tiny.cloud;
-		`;
-
 		return [
 			{
 				source: '/:path*',

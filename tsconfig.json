@@ -1,22 +1,23 @@
 {
-	/******************** Root Fields ********************/
+  /******************** Root Fields ********************/
   "compileOnSave": true,
-	"include": [
-		"src/**/*",
+  "include": [
+    "src/**/*",
     "pages/**/*",
-		"@types/**/*",
-		"next-env.d.ts", 
-		"src/__tests__",
+    "app/**/*",
+    "@types/**/*",
+    "next-env.d.ts",
+    "src/__tests__",
+    ".next/types/**/*.ts"
   ],
   "exclude": [
-		".next",
+    ".next",
     "node_modules",
     "**/node_modules/*",
-		"build",
-		"dist",
-		"out",
+    "build",
+    "dist",
+    "out"
   ],
-	
   "compilerOptions": {
     "target": "es6",
     // :::: module :::: //
@@ -34,7 +35,7 @@
     "strict": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": false,
-		"strictNullChecks": true,
+    "strictNullChecks": true,
     // :::: More spec :::: //
     "lib": [
       "dom",
@@ -48,7 +49,7 @@
     "skipLibCheck": true,
     "isolatedModules": true,
     // :::: Detail :::: //
-		"disableSizeLimit": true,
+    "disableSizeLimit": true,
     "forceConsistentCasingInFileNames": false,
     "incremental": true,
     // :::: Outfile :::: //
@@ -62,11 +63,19 @@
       "pages/*": [
         "./../pages/*"
       ],
+      "app/*": [
+        "./../app/*"
+      ]
     },
-		"baseUrl": "./src",
+    "baseUrl": "./src",
     "typeRoots": [
       "@types",
-			"./node_modules/@types"
+      "./node_modules/@types"
+    ],
+    "plugins": [
+      {
+        "name": "next"
+      }
     ]
   }
 }

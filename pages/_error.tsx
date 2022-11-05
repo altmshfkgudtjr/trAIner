@@ -9,6 +9,7 @@ const ErrorPage = ({ statusCode }) => {
         {statusCode && (
           <>
             <h1>{statusCode}</h1>
+            <br />
             <p>요청하신 페이지를 찾을 수 없습니다.</p>
             <p>입력하신 주소가 정확한지 다시 한번 확인해 주세요.</p>
           </>
@@ -58,6 +59,7 @@ const MessageBox = styled.section`
 
   p {
     ${typo.subtitle1};
+    color: ${({ theme }) => theme.text.f1};
   }
 `;
 

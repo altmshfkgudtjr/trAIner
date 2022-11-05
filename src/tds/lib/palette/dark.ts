@@ -4,7 +4,7 @@ import type { ThemeVariables } from 'tds/types/Palette';
 /** 다크 테마 색상표 */
 const darkTheme: ThemeVariables = {
   // Primary
-  primary: '#D6244A',
+  primary: '#6a35bb',
 
   // Background
   background: {

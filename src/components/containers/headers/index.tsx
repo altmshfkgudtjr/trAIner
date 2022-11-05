@@ -21,7 +21,7 @@ const HeaderLayout = ({ desktop, mobile }: Props) => {
 const Desktop = styled.div`
   display: none;
 
-  ${mediaQuery.large} {
+  ${mediaQuery.medium} {
     display: block;
   }
 `;
@@ -29,7 +29,7 @@ const Desktop = styled.div`
 const Mobile = styled.div`
   display: block;
 
-  ${mediaQuery.large} {
+  ${mediaQuery.medium} {
     display: none;
   }
 `;

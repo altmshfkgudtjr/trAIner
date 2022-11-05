@@ -1,56 +1,57 @@
 import styled from 'styled-components';
-// styles
-import { mediaQuery } from 'tds';
+import Image from 'next/image';
+// hooks
+import useMatchMedia from 'hooks/dom/useMatchMedia';
+// public
+import LogoImage from 'public/logo/primary.png';
+import SymbolImage from 'public/logo/primary-simple.png';
+import WhiteLogoImage from 'public/logo/white.png';
+import WhiteSymbolImage from 'public/logo/white-simple.png';
 
 /**
  * 로고
- * @param props
- * @param props.w 가로 길이
- * @param props.h 세로 길이
  */
-const Logo = ({ w, h }: Props) => {
+const Logo = ({ type = 'White', width, height }: Props) => {
+  const isDesktop = useMatchMedia({ media: 'medium' });
+
   return (
-    <Link href="/">
-      <Image src={`/logo/primary.png`} alt={`${process.env.NEXT_PUBLIC_BRAND_ENG}`} w={w} h={h} />
-      <ImageMobile
-        src={`/logo/primary-simple.png`}
-        alt={`${process.env.NEXT_PUBLIC_BRAND_ENG}`}
-        w={w}
-        h={h}
-      />
-    </Link>
+    <Wrapper>
+      <LogoLink href="/">
+        <Image
+          src={
+            type === 'White'
+              ? isDesktop
+                ? LogoImage
+                : SymbolImage
+              : isDesktop
+              ? WhiteLogoImage
+              : WhiteSymbolImage
+          }
+          alt="logo"
+          width={width}
+          height={height}
+          priority
+          placeholder="empty"
+        />
+      </LogoLink>
+    </Wrapper>
   );
 };
 
-const Link = styled.a`
+const Wrapper = styled.div`
+  position: relative;
+`;
+
+const LogoLink = styled.a`
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
-const Image = styled.img<{
-  w?: number;
-  h?: number;
-}>`
-  display: none;
-  max-width: ${({ w }) => (w ? `${w}px` : 'auto')};
-  max-height: ${({ h }) => (h ? `${h}px` : 'auto')};
-
-  ${mediaQuery.medium} {
-    display: block;
-  }
-`;
-const ImageMobile = styled(Image)`
-  display: block;
-
-  ${mediaQuery.medium} {
-    display: none;
-  }
-`;
-
 type Props = {
-  w?: number;
-  h?: number;
+  type?: 'White' | 'Black';
+  width?: number;
+  height?: number;
 };
 
 export default Logo;

@@ -4,7 +4,7 @@ import type { ThemeVariables } from 'tds/types/Palette';
 /** 라이트 테마 색상표 */
 const lightTheme: ThemeVariables = {
   // Primary
-  primary: '#C21C3F',
+  primary: '#4f0eb0',
 
   // Background
   background: {

@@ -1,56 +1,105 @@
-import styled from 'styled-components';
-import { useEffect } from 'react';
+import styled, { keyframes } from 'styled-components';
+import Link from 'next/link';
+import Image from 'next/image';
 // components
-import Logo from 'components/atoms/Logo';
-// hooks
-import useSnackbar from 'hooks/dom/useSnackbar';
+import { TextButton } from 'tds/components/buttons';
+import Layout from 'components/layouts';
+import LanguageImage from 'public/languages.webp';
+// styles
+import { mediaQuery, typo } from 'tds';
 
 /** 홈 페이지 */
 const HomePage = () => {
-  const { initSnackbar } = useSnackbar();
-
-  useEffect(() => {
-    initSnackbar({
-      type: 'Info',
-      title: '반갑습니다',
-      message: '새로운 프로젝트입니다.',
-    });
-  }, [initSnackbar]);
-
   return (
     <Wrapper>
-      <Content>
-        <Logo w={240} />
-        <p>Comming Soon</p>
-      </Content>
+      <Section>
+        <Title>
+          <EffectTitle>알고리즘</EffectTitle> 공부
+          <br />
+          <EffectTitle>트레이너</EffectTitle> 로 매듭짓다<span>.</span>
+          <br />
+          <br />
+          <Link href="/curriculum" style={{ display: 'flex' }}>
+            <TextButton size="Large">커리큘럼 바로가기</TextButton>
+          </Link>
+        </Title>
+      </Section>
+
+      <Section>
+        <Title style={{ textAlign: 'center' }}>
+          선호 언어인 <EffectTitle>파이썬</EffectTitle> 을
+          <br />
+          기본 언어로 탑재
+        </Title>
+        <br />
+        <ImageWrapper>
+          <div>
+            <Image src={LanguageImage} alt="코딩 언어" fill priority />
+          </div>
+        </ImageWrapper>
+      </Section>
     </Wrapper>
   );
 };
+HomePage.getLayout = page => {
+  return <Layout>{page}</Layout>;
+};
+
+const Blink = keyframes`
+	0% { opacity: 1; }
+	59% { opacity: 1; }
+	60% { opacity: 0; }
+	100% { opacity: 0; }
+`;
 
 const Wrapper = styled.div`
   display: flex;
+  flex-direction: column;
+`;
+
+const Section = styled.section`
+  display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
   width: 100%;
   height: 100vh;
 `;
 
-const Content = styled.div`
-  padding: 80px 64px;
-  border-radius: 20px;
-  background-color: rgba(226, 189, 255, 0.5);
-  border: 1px solid rgba(226, 189, 255);
-  box-shadow: 0 0 48px 24px rgba(226, 189, 255, 0.2);
-  text-align: center;
-  transition: 0.2s ease;
+const EffectTitle = styled.strong``;
+const Title = styled.h1`
+  ${typo.Big1};
+  color: ${({ theme }) => theme.text.f2};
 
-  &:hover {
-    box-shadow: 0 0 16px 8px rgba(226, 189, 255, 0.2);
+  ${mediaQuery.medium} {
+    font-size: 64px;
+    line-height: 72px;
   }
 
-  p {
-    margin-top: 12px;
-    font-weight: 500;
+  ${EffectTitle} {
+    background: linear-gradient(to right, #4608a2, #9565dc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  span {
+    opacity: 0;
+    animation: 0.8s ${Blink} linear infinite;
+  }
+`;
+
+const ImageWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+
+  & > div {
+    position: relative;
+    min-width: 866px;
+    height: 154px;
   }
 `;
 

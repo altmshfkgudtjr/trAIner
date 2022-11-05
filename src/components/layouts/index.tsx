@@ -2,6 +2,8 @@ import styled from 'styled-components';
 // components
 import Sidebar from 'components/containers/Sidebar';
 import HeaderLayout from 'components/containers/headers';
+import MainHeader from 'components/containers/headers/Main';
+import MobileMainHeader from 'components/containers/headers/MobileMain';
 // styles
 import { mediaQuery } from 'tds';
 // types
@@ -16,8 +18,8 @@ import type { ReactNode, PropsWithChildren } from 'react';
  */
 const Layout = ({
   isSide = false,
-  desktopHeader = <></>,
-  mobileHeader = <></>,
+  desktopHeader = <MainHeader />,
+  mobileHeader = <MobileMainHeader />,
   children,
 }: PropsWithChildren<Props>) => {
   return (
@@ -44,7 +46,6 @@ const Body = styled.div<{ isSide: boolean }>`
 
   ${mediaQuery.large} {
     width: ${({ isSide }) => (isSide ? `calc(100% - 320px)` : `100%`)};
-    margin-top: 60px;
   }
 `;
 

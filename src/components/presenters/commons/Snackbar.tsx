@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { animations, boxShadow, typo } from 'tds';
 // types
 import { Snackbar as SnackbarInfo, SnackbarType } from 'store/system/snackbar';
-import { SnackbarPosition } from 'components/containers/commons/providers/SnackbarProvider';
+import { SnackbarPosition } from 'providers/SnackbarProvider';
 
 /**
  * 스낵바
@@ -66,23 +66,48 @@ const Snackbar = ({
   }, [isClose, snackbar, animationDuration, onRemove]);
 
   return (
-    <Wrapper
-      isClose={isClose}
+    <PositionWrapper
       isTop={position.startsWith('Top')}
       idx={idx}
-      snackbarType={snackbar.type}
-      animationDuration={animationDuration}
-      closeEnabled={closeEnabled}
       stackEnabled={stackEnabled}
       onClick={onClose}
     >
-      {!!snackbar.title && <Title>{snackbar.title}</Title>}
-      <Message>{snackbar.message}</Message>
-    </Wrapper>
+      <AnimeWrapper
+        idx={idx}
+        isTop={position.startsWith('Top')}
+        isClose={isClose}
+        animationDuration={animationDuration}
+      >
+        <CursorActiveWrapper
+          isClose={isClose}
+          isTop={position.startsWith('Top')}
+          idx={idx}
+          stackEnabled={stackEnabled}
+        >
+          <Wrapper
+            isClose={isClose}
+            isTop={position.startsWith('Top')}
+            idx={idx}
+            snackbarType={snackbar.type}
+            animationDuration={animationDuration}
+            closeEnabled={closeEnabled}
+            stackEnabled={stackEnabled}
+          >
+            {!!snackbar.title && <Title>{snackbar.title}</Title>}
+            <Message>{snackbar.message}</Message>
+          </Wrapper>
+        </CursorActiveWrapper>
+      </AnimeWrapper>
+    </PositionWrapper>
   );
 };
 
-const Wrapper = styled.div<WrapperType>`
+type PositionWrapperProps = {
+  isTop: boolean;
+  idx: number;
+  stackEnabled: boolean;
+};
+const PositionWrapper = styled.div<PositionWrapperProps>`
   position: absolute;
   ${({ isTop }) =>
     isTop
@@ -93,6 +118,80 @@ const Wrapper = styled.div<WrapperType>`
           bottom: 0;
         `};
   right: 0;
+  width: 100%;
+  height: auto;
+  transform: ${({ idx, stackEnabled, isTop }) => {
+    if (!stackEnabled) {
+      return '';
+    }
+
+    return `translate(0, calc((100% + 8px) * ${idx} * ${isTop ? 1 : -1}))`;
+  }};
+  transition: transform 0.2s ease;
+`;
+
+type AnimeWrapperProps = {
+  idx: number;
+  isTop: boolean;
+  isClose: boolean;
+  animationDuration: number;
+};
+const AnimeWrapper = styled.div<AnimeWrapperProps>`
+  ${({ idx, isTop, isClose, animationDuration }) =>
+    isClose
+      ? css`
+          animation: ${animationDuration}ms
+            ${isTop ? animations.fadeOutBottom(`8px`) : animations.fadeOutTop('-8px')} ease;
+        `
+      : css`
+          animation: ${animationDuration}ms
+            ${isTop ? animations.moveInTop('-88px') : animations.moveInBottom('88px')} ease;
+        `};
+`;
+
+type CursorActiveWrapperProps = {
+  isClose: boolean;
+  isTop: boolean;
+  idx: number;
+  stackEnabled: boolean;
+};
+const CursorActiveWrapper = styled.div<CursorActiveWrapperProps>`
+  transform: ${({ isClose }) => (isClose ? 'scale(0.96, 0.96)' : 'scale(1, 1)')};
+  transition: transform 0.2s ease;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+    opacity: ${({ isClose }) => (isClose ? 1 : 0)};
+    pointer-events: none;
+    transition: 0.2s ease;
+  }
+
+  &:active {
+    transform: scale(0.96, 0.96);
+
+    &::after {
+      opacity: 1;
+    }
+  }
+`;
+
+type WrapperType = {
+  isClose: boolean;
+  isTop: boolean;
+  idx: number;
+  snackbarType: SnackbarType;
+  animationDuration: number;
+  closeEnabled: boolean;
+  stackEnabled: boolean;
+};
+const Wrapper = styled.div<WrapperType>`
   width: 100%;
   height: auto;
   padding: 16px;
@@ -116,23 +215,9 @@ const Wrapper = styled.div<WrapperType>`
     return _[snackbarType];
   }};
   ${boxShadow.e1};
-  cursor: ${({ closeEnabled }) => (closeEnabled ? 'pointer' : 'initial')};
-  ${({ isClose, animationDuration }) =>
-    isClose
-      ? css`
-          animation: ${animationDuration}ms ${animations.fadeOut} ease;
-        `
-      : css`
-          animation: ${animationDuration}ms ${animations.fadeIn} ease;
-        `};
-  transform: ${({ idx, stackEnabled, isTop }) => {
-    if (!stackEnabled) {
-      return '';
-    }
-
-    return `translate(0, calc((100% + 8px) * ${idx} * ${isTop ? 1 : -1}))`;
-  }};
-  transition: transform 0.2s ease;
+  overflow: hidden;
+  cursor: ${({ isClose, closeEnabled }) =>
+    isClose ? 'default' : closeEnabled ? 'pointer' : 'initial'};
 `;
 
 const Title = styled.p`
@@ -145,16 +230,6 @@ const Message = styled.p`
   ${typo.subvalue2};
   color: inherit;
 `;
-
-type WrapperType = {
-  isClose: boolean;
-  isTop: boolean;
-  idx: number;
-  snackbarType: SnackbarType;
-  animationDuration: number;
-  closeEnabled: boolean;
-  stackEnabled: boolean;
-};
 
 type Props = {
   idx: number;

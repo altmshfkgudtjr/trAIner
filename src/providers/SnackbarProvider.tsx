@@ -4,6 +4,7 @@ import { useCallback } from 'react';
 import Snackbar from 'components/presenters/commons/Snackbar';
 // hooks
 import useSnackbar from 'hooks/dom/useSnackbar';
+import useMatchMedia from 'hooks/dom/useMatchMedia';
 // styles
 import { zIndex, mediaQuery } from 'tds';
 
@@ -12,13 +13,14 @@ import { zIndex, mediaQuery } from 'tds';
  * @param options 스낵바 초기 옵션
  */
 const SnackbarProvider = ({
-  position = 'BottomLeft',
+  position = 'BottomRight',
   duration = 3000,
   animationDuration = 250,
   closeEnabled = true,
   stackEnabled = true,
   maxCount = 3,
 }: SnackbarOption) => {
+  const isNotMobile = useMatchMedia({ media: 'medium' });
   const { snackbarList, removeSnackbar } = useSnackbar();
   const isExist = snackbarList.length > 0;
 
@@ -43,7 +45,7 @@ const SnackbarProvider = ({
         animationDuration={animationDuration}
         closeEnabled={closeEnabled}
         stackEnabled={stackEnabled}
-        maxCount={maxCount}
+        maxCount={isNotMobile ? maxCount : 1}
         onRemove={onRemove}
       />
     );
@@ -54,7 +56,7 @@ const SnackbarProvider = ({
 
 const SnackbarWrapper = styled.div<{ position: SnackbarPosition }>`
   position: fixed;
-  width: 100%;
+  width: calc(100% - 16px);
   ${({ position }) => {
     const _ = {
       TopLeft: css`
@@ -98,17 +100,17 @@ const SnackbarWrapper = styled.div<{ position: SnackbarPosition }>`
     ${({ position }) => {
       const _ = {
         TopLeft: css`
-          top: 80px;
+          top: 20px;
           left: 20px;
           right: initial;
         `,
         TopCenter: css`
-          top: 80px;
+          top: 20px;
           left: 20px;
           right: 20px;
         `,
         TopRight: css`
-          top: 80px;
+          top: 20px;
           left: initial;
           right: 20px;
         `,
