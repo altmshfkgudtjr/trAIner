@@ -1,21 +1,27 @@
-import styled, { css } from 'styled-components';
+import styled, { useTheme } from 'styled-components';
+import { useRecoilValue } from 'recoil';
 import { useRef } from 'react';
 import Link from 'next/link';
-// import { useRecoilState } from 'recoil';
 // components
 import Logo from 'components/atoms/Logo';
+import { TextButton } from 'tds/components/buttons';
+// store
+import themeState from 'store/system/theme';
 // hooks
 import useScrollHeader from 'hooks/dom/useScrollHeader';
 // styles
 import { mediaQuery, zIndex } from 'tds';
-import { lib } from 'tds';
+import { boxShadow } from 'tds';
+// types
+import type { User } from 'types/api/user';
 
 /** 모바일 메인 헤더 */
-const MobileMainHeader = () => {
+const MobileMainHeader = ({ profile }: Props) => {
+  const currentTheme = useTheme();
+  const theme = useRecoilValue(themeState);
   const headerRef = useRef(null);
-  useScrollHeader(headerRef);
 
-  // const [state, setState] = useRecoilState(uiState);
+  useScrollHeader(headerRef);
 
   return (
     <>
@@ -23,9 +29,45 @@ const MobileMainHeader = () => {
         <Header ref={headerRef}>
           <Logo height={24} />
 
-          <Link href="/sign-in">
-            <Button>로그인</Button>
-          </Link>
+          <div>
+            {profile && (
+              <Link href="/profile">
+                <TextButton
+                  size="ExtraSmall"
+                  color={
+                    theme.mode === 'Light' ? currentTheme.semantic.white : currentTheme.primary
+                  }
+                >
+                  {profile.name}님
+                </TextButton>
+              </Link>
+            )}
+
+            {!profile && (
+              <>
+                <Link href="/sign-in">
+                  <TextButton
+                    size="ExtraSmall"
+                    color={
+                      theme.mode === 'Light' ? currentTheme.semantic.white : currentTheme.primary
+                    }
+                  >
+                    로그인
+                  </TextButton>
+                </Link>
+                <Link href="/sign-up">
+                  <TextButton
+                    size="ExtraSmall"
+                    color={
+                      theme.mode === 'Light' ? currentTheme.semantic.white : currentTheme.primary
+                    }
+                  >
+                    가입하기
+                  </TextButton>
+                </Link>
+              </>
+            )}
+          </div>
         </Header>
       </Wrapper>
 
@@ -50,30 +92,25 @@ const Header = styled.div`
   padding: 8px 12px;
   border-radius: 0 0 16px 16px;
   background-color: ${({ theme }) => theme.text.f2};
+  ${boxShadow.e3};
+
+  & > div {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
 
   ${mediaQuery.large} {
     padding: 8px 12px;
   }
 `;
 
-const Button = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 32px;
-  padding: 0 12px;
-  border-radius: 4px;
-  color: ${({ theme }) => theme.semantic.black};
-  transition: 0.1s ease;
-
-  ${lib.onlyHover(css`
-    background-color: ${({ theme }) => theme.primary};
-    color: ${({ theme }) => theme.text.f2};
-  `)};
-`;
-
 const HeaderSpace = styled.div`
   height: 48px;
 `;
+
+type Props = {
+  profile?: User;
+};
 
 export default MobileMainHeader;

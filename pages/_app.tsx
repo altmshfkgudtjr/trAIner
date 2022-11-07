@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
+import request from 'api';
 // components
 import ErrorBoundary from 'components/containers/commons/ErrorBoundary';
 import {
@@ -21,8 +22,10 @@ import { initRandomChar } from 'utils/random';
 import 'public/font.css';
 // types
 import type { CustomAppProps } from 'next/app';
+import type { Theme } from 'tds/types/Palette';
+import type { User } from 'types/api/user';
 
-const App = ({ Component, pageProps }: CustomAppProps) => {
+const App = ({ Component, pageProps }: CustomAppProps<PageProps>) => {
   const [themeType, setThemeType] = useState(pageProps.theme);
 
   const { MetaTitle } = useMetaData();
@@ -32,7 +35,7 @@ const App = ({ Component, pageProps }: CustomAppProps) => {
 
   useEffect(() => {
     const value = cookieUtils.getCookieFromClient('theme');
-    setThemeType(v => (v ? v : value));
+    setThemeType(v => (v ? v : value) as Theme | undefined);
   }, []);
 
   return (
@@ -68,7 +71,7 @@ const App = ({ Component, pageProps }: CustomAppProps) => {
 };
 
 App.getInitialProps = async ({ ctx, Component }) => {
-  let pageProps: any = {};
+  let pageProps: PageProps = {};
   if (Component.getInitialProps) {
     pageProps = await Component.getInitialProps(ctx);
   }
@@ -85,7 +88,24 @@ App.getInitialProps = async ({ ctx, Component }) => {
     });
   }
 
+  // Server-Side
+  let profile = null;
+  if (ctx.res) {
+    try {
+      profile = await request.get(`/api/v1/users/me`);
+      Object.assign(pageProps, { profile });
+    } catch {
+      profile = null;
+    }
+  }
+
   return { pageProps };
+};
+
+type PageProps = {
+  nonce?: string;
+  theme?: Theme;
+  profie?: User;
 };
 
 export default App;

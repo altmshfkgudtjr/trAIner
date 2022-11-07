@@ -29,6 +29,7 @@ const Symbol = ({ type = 'Color', w, h, isLinking = true }: Props) => {
         alt={`${process.env.NEXT_PUBLIC_BRAND_ENG} 로고`}
         width={w}
         height={h}
+        priority
       />
     </Layout>
   );

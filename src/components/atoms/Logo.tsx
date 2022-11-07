@@ -31,7 +31,6 @@ const Logo = ({ type = 'White', width, height }: Props) => {
           width={width}
           height={height}
           priority
-          placeholder="empty"
         />
       </LogoLink>
     </Wrapper>

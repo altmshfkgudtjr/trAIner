@@ -1,22 +1,19 @@
-import styled, { useTheme, css } from 'styled-components';
-import { useState, useEffect, useRef } from 'react';
-import { useRecoilValue } from 'recoil';
-import { useRouter } from 'next/router';
+import styled, { useTheme } from 'styled-components';
+import { useState, useRef } from 'react';
+import Router from 'next/router';
 // components
-import Layout from 'components/layouts';
 import Symbol from 'components/atoms/Symbol';
 import { FillButton } from 'tds/components/buttons';
 import TextInput from 'components/atoms/inputs/Text';
 import PasswordInput from 'components/atoms/inputs/Password';
 import AgreementSection from 'components/presenters/auth/AgreementSection';
-// store
-import themeState from 'store/system/theme';
+// api
+import { useSignUpMutation } from 'api/user';
 // hooks
 import useMetaData from 'hooks/commons/useMetaData';
 import useSnackbar from 'hooks/dom/useSnackbar';
-// import * as useUserController from 'hooks/controllers/useUserController';
 // styles
-import { typo, lib } from 'tds';
+import { typo } from 'tds';
 
 /** 회원가입 페이지 */
 const SignUpPage = () => {
@@ -24,45 +21,41 @@ const SignUpPage = () => {
 
   const id = useRef<HTMLInputElement>(null);
   const pw = useRef<HTMLInputElement>(null);
-  const name = useRef<HTMLInputElement>(null);
 
   const { MetaTitle } = useMetaData();
   const currentTheme = useTheme();
-  const router = useRouter();
   const { initSnackbar } = useSnackbar();
 
-  const currentThemeState = useRecoilValue(themeState);
-  // const { mutate, status } = useUserController.SignUp();
+  const { mutate, status } = useSignUpMutation();
 
-  // TODO 비밀번호 특수문자 제한 조건 추가하기
-  // 허용하는 특수문자: `~!@#$%^&*()-_=+
+  const onSuccessHandler = () => {
+    if (typeof Router.query.redirect === 'string') {
+      window.location.href = Router.query.redirect;
+    } else {
+      window.location.href = '/';
+    }
+  };
+
   const onSignUp = async () => {
     if (status === 'loading') {
       return;
     }
 
-    if (!id.current || !name.current || !pw.current) {
+    if (!id.current || !pw.current) {
       return;
     }
 
     if (id.current.value === '') {
-      initSnackbar({ type: 'Warning', title: '아이디 입력', message: '올바른 값을 입력해주세요' });
+      initSnackbar({ type: 'Warning', title: '학번 입력', message: '정상적인 값을 입력해주세요' });
       return id.current.focus();
-    } else if (id.current.value.length < 4) {
+    } else if (id.current.value.length < 8) {
       initSnackbar({
         type: 'Warning',
-        title: '아이디 입력',
-        message: '최소 4글자 이상 입력해주세요',
+        title: '학번 입력',
+        message: '정상적인 값을 입력해주세요',
       });
       return id.current.focus();
     }
-
-    if (name.current.value === '') {
-      initSnackbar({ type: 'Warning', title: '이름 입력', message: '올바른 값을 입력해주세요' });
-      return name.current.focus();
-    }
-
-    const re = /^(?=.*[a-zA-Z])(?=.*[0-9]).{4,20}$/;
 
     if (pw.current.value === '') {
       initSnackbar({
@@ -71,29 +64,24 @@ const SignUpPage = () => {
         message: '올바른 값을 입력해주세요',
       });
       return pw.current.focus();
-    } else if (pw.current.value.length < 8) {
-      initSnackbar({
-        type: 'Warning',
-        title: '비밀번호 입력',
-        message: '최소 8글자 이상 입력해주세요',
-      });
-      return pw.current.focus();
-    } else if (!re.test(pw.current.value)) {
-      initSnackbar({
-        type: 'Warning',
-        title: '비밀번호 입력',
-        message: '영문 대소문자, 숫자의 조합이어야 합니다',
-      });
-      return pw.current.focus();
     }
 
-    // mutate({
-    //   data: {
-    //     id: id.current.value,
-    //     name: name.current.value,
-    //     pw: pw.current.value,
-    //   },
-    // });
+    mutate(
+      {
+        id: id.current.value,
+        pw: pw.current.value,
+      },
+      {
+        onSuccess: () => onSuccessHandler(),
+        onError: () => {
+          initSnackbar({
+            type: 'Danger',
+            title: '서버와의 연결 오류',
+            message: '잠시 후 다시 시도해주세요',
+          });
+        },
+      },
+    );
   };
 
   const onKeyDown = e => {
@@ -101,29 +89,6 @@ const SignUpPage = () => {
       onSignUp();
     }
   };
-
-  useEffect(() => {
-    switch (status) {
-      case 'error':
-        initSnackbar({
-          type: 'Danger',
-          title: '서버와의 연결 오류',
-          message: '잠시 후 다시 시도해주세요',
-        });
-        break;
-
-      case 'success':
-        initSnackbar({
-          type: 'Success',
-          title: '회원가입 성공',
-          message: '환영합니다! 가입한 계정으로 다시 한번 로그인해주세요',
-        });
-        router.push('/sign-in');
-        break;
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [status, initSnackbar]);
-  }, [initSnackbar]);
 
   return (
     <>
@@ -164,11 +129,10 @@ const SignUpPage = () => {
               <FillButton
                 size="Regular"
                 color={currentTheme.primary}
-                // onClick={status === 'loading' ? undefined : onSignUp}
-                // disabled={status === 'loading'}
+                onClick={status === 'loading' ? undefined : onSignUp}
+                disabled={status === 'loading'}
               >
-                {/* {status === 'loading' ? '인증 중' : '계속하기'} */}
-                계속하기
+                {status === 'loading' ? '인증 중' : '계속하기'}
               </FillButton>
             </ButtonWrapper>
           </>
@@ -224,26 +188,5 @@ const ButtonWrapper = styled.div`
     flex: 1;
   }
 `;
-
-const Button = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 48px;
-  padding: 0 12px;
-  border-radius: 8px;
-  background-color: ${({ theme }) => theme.text.f3};
-  color: ${({ theme }) => theme.semantic.black};
-  transition: 0.1s ease;
-
-  ${lib.onlyHover(css`
-    background-color: ${({ theme }) => theme.primary};
-    color: ${({ theme }) => theme.text.f2};
-  `)};
-`;
-
-SignUpPage.getLayout = page => {
-  return <Layout>{page}</Layout>;
-};
 
 export default SignUpPage;

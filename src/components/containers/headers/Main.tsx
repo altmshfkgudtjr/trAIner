@@ -8,11 +8,12 @@ import Logo from 'components/atoms/Logo';
 import themeState from 'store/system/theme';
 // styles
 import { mediaQuery, zIndex, typo } from 'tds';
-import { lib, animations } from 'tds';
+import { lib, boxShadow, animations } from 'tds';
+// types
+import type { User } from 'types/api/user';
 
-const MainHeader = () => {
+const MainHeader = ({ profile }: Props) => {
   const currentTheme = useTheme();
-  // const { status, data } = useUserController.GetProfile();
   const theme = useRecoilValue(themeState);
 
   return (
@@ -21,22 +22,41 @@ const MainHeader = () => {
         <Logo type={theme.mode === 'Dark' ? 'White' : 'Black'} height={24} />
 
         <div>
-          <Link href="/sign-in">
-            <TextButton
-              size="ExtraSmall"
-              color={theme.mode === 'Light' ? currentTheme.semantic.white : currentTheme.primary}
-            >
-              로그인
-            </TextButton>
-          </Link>
-          <Link href="/sign-up">
-            <TextButton
-              size="ExtraSmall"
-              color={theme.mode === 'Light' ? currentTheme.semantic.white : currentTheme.primary}
-            >
-              가입하기
-            </TextButton>
-          </Link>
+          {profile && (
+            <Link href="/profile">
+              <TextButton
+                size="ExtraSmall"
+                color={theme.mode === 'Light' ? currentTheme.semantic.white : currentTheme.primary}
+              >
+                {profile.name}님
+              </TextButton>
+            </Link>
+          )}
+
+          {!profile && (
+            <>
+              <Link href="/sign-in">
+                <TextButton
+                  size="ExtraSmall"
+                  color={
+                    theme.mode === 'Light' ? currentTheme.semantic.white : currentTheme.primary
+                  }
+                >
+                  로그인
+                </TextButton>
+              </Link>
+              <Link href="/sign-up">
+                <TextButton
+                  size="ExtraSmall"
+                  color={
+                    theme.mode === 'Light' ? currentTheme.semantic.white : currentTheme.primary
+                  }
+                >
+                  가입하기
+                </TextButton>
+              </Link>
+            </>
+          )}
         </div>
       </ContentWrapper>
     </Wrapper>
@@ -56,7 +76,7 @@ const Wrapper = styled.header`
   background-color: ${({ theme }) => theme.text.f2};
   overflow: hidden;
   z-index: ${zIndex.header};
-
+  ${boxShadow.e3};
   animation: 0.6s ${animations.zoomIn(0)} ease-in-out;
 
   ${mediaQuery.medium} {
@@ -102,5 +122,9 @@ const Button = styled.div`
     color: ${({ theme }) => theme.text.f2};
   `)};
 `;
+
+type Props = {
+  profile?: User;
+};
 
 export default MainHeader;

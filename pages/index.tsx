@@ -42,7 +42,7 @@ const HomePage = () => {
   );
 };
 HomePage.getLayout = page => {
-  return <Layout>{page}</Layout>;
+  return <Layout profile={page.props.profie}>{page}</Layout>;
 };
 
 const Blink = keyframes`

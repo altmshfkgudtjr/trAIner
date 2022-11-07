@@ -3,6 +3,9 @@ export type Theme = 'light' | 'dark';
 
 /** 색상표 타입 */
 export type ThemeVariables = {
+  // Type
+  themeType: Theme;
+
   // Primary
   primary: string;
 

@@ -1,21 +1,20 @@
-import styled, { useTheme, css } from 'styled-components';
+import styled, { useTheme } from 'styled-components';
+import Router from 'next/router';
 import { useRouter } from 'next/router';
 import { useState, useRef } from 'react';
-import { useRecoilValue } from 'recoil';
 // components
-import Layout from 'components/layouts';
 import Symbol from 'components/atoms/Symbol';
 import TextInput from 'components/atoms/inputs/Text';
 import PasswordInput from 'components/atoms/inputs/Password';
 import CheckBox from 'components/atoms/inputs/Checkbox';
 import { FillButton } from 'tds/components/buttons';
-// store
-import themeState from 'store/system/theme';
+// api
+import { useSignInMutation } from 'api/user';
 // hooks
 import useMetaData from 'hooks/commons/useMetaData';
 import useSnackbar from 'hooks/dom/useSnackbar';
 // styles
-import { typo, lib } from 'tds';
+import { typo } from 'tds';
 
 /** 로그인 페이지 */
 const SignInPage = () => {
@@ -29,16 +28,24 @@ const SignInPage = () => {
   const router = useRouter();
   const { initSnackbar } = useSnackbar();
 
-  // const { mutate, status } = useUserController.SignIn(isChecked);
+  const { mutate, status } = useSignInMutation();
+
+  const onSuccessHandler = () => {
+    if (typeof Router.query.redirect === 'string') {
+      window.location.href = Router.query.redirect;
+    } else {
+      window.location.href = '/';
+    }
+  };
 
   const onChangeCheckBox = () => setIsChecked(v => !v);
 
   const onBack = () => router.back();
 
   const onSignIn = () => {
-    // if (status === 'loading') {
-    //   return;
-    // }
+    if (status === 'loading') {
+      return;
+    }
 
     if (!id.current || !pw.current) {
       return;
@@ -58,34 +65,31 @@ const SignInPage = () => {
       return pw.current.focus();
     }
 
-    // mutate(
-    //   {
-    //     data: {
-    //       id: id.current.value,
-    //       pw: pw.current.value,
-    //     },
-    //   },
-    //   {
-    //     onSuccess: () => {
-    //       window.location.href = '/';
-    //     },
-    //     onError: (err: any) => {
-    //       if (err.response.status === 403) {
-    //         return initSnackbar({
-    //           type: 'Danger',
-    //           title: '로그인 실패',
-    //           message: '아이디 또는 비밀번호를 확인 후, 다시 로그인해주세요',
-    //         });
-    //       }
+    mutate(
+      {
+        id: id.current.value,
+        pw: pw.current.value,
+        isPersist: isChecked,
+      },
+      {
+        onSuccess: () => onSuccessHandler(),
+        onError: (err: any) => {
+          if (err.response.status === 403) {
+            return initSnackbar({
+              type: 'Danger',
+              title: '로그인 실패',
+              message: '아이디 또는 비밀번호를 확인 후, 다시 로그인해주세요',
+            });
+          }
 
-    //       initSnackbar({
-    //         type: 'Danger',
-    //         title: '서버와의 연결 오류',
-    //         message: '잠시 후 다시 시도해주세요',
-    //       });
-    //     },
-    //   },
-    // );
+          initSnackbar({
+            type: 'Danger',
+            title: '서버와의 연결 오류',
+            message: '잠시 후 다시 시도해주세요',
+          });
+        },
+      },
+    );
   };
 
   const onKeyDown = e => {
@@ -128,13 +132,13 @@ const SignInPage = () => {
           <FillButton color={currentTheme.background.bg5} onClick={onBack}>
             돌아가기
           </FillButton>
-          {/* <FillButton
+          <FillButton
             color={currentTheme.primary}
             onClick={status === 'loading' ? undefined : onSignIn}
             disabled={status === 'loading'}
           >
             {status === 'loading' ? '진입 중' : '로그인'}
-          </FillButton> */}
+          </FillButton>
         </ButtonWrapper>
       </Wrapper>
     </>

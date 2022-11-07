@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 // components
-import Sidebar from 'components/containers/Sidebar';
 import HeaderLayout from 'components/containers/headers';
 import MainHeader from 'components/containers/headers/Main';
 import MobileMainHeader from 'components/containers/headers/MobileMain';
@@ -8,51 +7,48 @@ import MobileMainHeader from 'components/containers/headers/MobileMain';
 import { mediaQuery } from 'tds';
 // types
 import type { ReactNode, PropsWithChildren } from 'react';
+import type { User } from 'types/api/user';
 
 /**
  * 메인 레이아웃
  * @param props
- * @param props.false 사이드바 존재 여부
  * @param props.desktopHeader 데스크탑 헤더
  * @param props.mobileHeader 모바일 헤더
  */
-const Layout = ({
-  isSide = false,
-  desktopHeader = <MainHeader />,
-  mobileHeader = <MobileMainHeader />,
-  children,
-}: PropsWithChildren<Props>) => {
+const Layout = ({ desktopHeader, mobileHeader, profile, children }: PropsWithChildren<Props>) => {
   return (
     <>
-      <HeaderLayout desktop={desktopHeader} mobile={mobileHeader} />
-      <Wrapper isSide={isSide}>
-        {isSide && <Sidebar />}
-        <Body isSide={isSide}>{children}</Body>
+      <HeaderLayout
+        desktop={desktopHeader ?? <MainHeader profile={profile} />}
+        mobile={mobileHeader ?? <MobileMainHeader profile={profile} />}
+      />
+      <Wrapper>
+        <Body>{children}</Body>
       </Wrapper>
     </>
   );
 };
 
-const Wrapper = styled.div<{ isSide: boolean }>`
-  display: ${({ isSide }) => (isSide ? 'flex' : 'block')};
+const Wrapper = styled.div`
+  display: block;
   align-items: flex-start;
   justify-content: space-between;
   overflow: auto;
 `;
 
-const Body = styled.div<{ isSide: boolean }>`
+const Body = styled.div`
   width: 100%;
   margin-left: auto;
 
   ${mediaQuery.large} {
-    width: ${({ isSide }) => (isSide ? `calc(100% - 320px)` : `100%`)};
+    width: 100%;
   }
 `;
 
 type Props = {
-  isSide?: boolean;
   desktopHeader?: ReactNode;
   mobileHeader?: ReactNode;
+  profile?: User;
 };
 
 export default Layout;
