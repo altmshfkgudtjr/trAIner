@@ -137,7 +137,7 @@ type AnimeWrapperProps = {
   animationDuration: number;
 };
 const AnimeWrapper = styled.div<AnimeWrapperProps>`
-  ${({ idx, isTop, isClose, animationDuration }) =>
+  ${({ isTop, isClose, animationDuration }) =>
     isClose
       ? css`
           animation: ${animationDuration}ms

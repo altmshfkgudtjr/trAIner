@@ -8,7 +8,6 @@ import {
   saveSessionStorage,
   removeSessionStorage,
 } from 'utils/helpers/storage';
-
 // types
 import type { AxiosError } from 'axios';
 import type * as types from 'types/api/user';
@@ -42,21 +41,44 @@ export const useUserQuery = (props?: Select<types.UserQuery, 'Props'>) => {
 /**
  * 로그인
  * @mutation
- * @version 1
  */
 export const useSignInMutation = (props?: Select<types.SignInMutation, 'Props'>) => {
   return useMutation<
     Select<types.SignInMutation, 'Response'>,
     AxiosError,
     Select<types.SignInMutation, 'Variables'>
-  >(data => request.post(`/api/v1/sign-in`, data), {
+  >(data => request.post(`/api/auth/sign-in`, data), {
     ...props?.options,
     onSuccess: (res, ...rest) => {
       if (rest[0].isPersist) {
-        saveLocalStorage(REFRESH_TOKEN, res.result.refreshToken);
+        saveLocalStorage(REFRESH_TOKEN, res.result.refresh_token);
       } else {
-        saveSessionStorage(REFRESH_TOKEN, res.result.refreshToken);
+        saveSessionStorage(REFRESH_TOKEN, res.result.refresh_token);
       }
+      props?.options?.onSuccess && props.options.onSuccess(res, ...rest);
+    },
+    onError: (res, ...rest) => {
+      removeLocalStorage(REFRESH_TOKEN);
+      removeSessionStorage(REFRESH_TOKEN);
+      props?.options?.onError && props.options.onError(res, ...rest);
+    },
+  });
+};
+
+/**
+ * 로그아웃
+ * @mutation
+ */
+export const useSignOutMutation = (props?: Select<types.SignOutMutation, 'Props'>) => {
+  return useMutation<
+    Select<types.SignOutMutation, 'Response'>,
+    AxiosError,
+    Select<types.SignOutMutation, 'Variables'>
+  >(() => request.post(`/api/auth/sign-out`), {
+    ...props?.options,
+    onSuccess: (res, ...rest) => {
+      removeLocalStorage(REFRESH_TOKEN);
+      removeSessionStorage(REFRESH_TOKEN);
       props?.options?.onSuccess && props.options.onSuccess(res, ...rest);
     },
     onError: (res, ...rest) => {
@@ -80,7 +102,7 @@ export const useSignUpMutation = (props?: Select<types.SignUpMutation, 'Props'>)
   >(data => request.post(`/api/v1/sign-up`, data), {
     ...props?.options,
     onSuccess: (res, ...rest) => {
-      saveSessionStorage(REFRESH_TOKEN, res.result.refreshToken);
+      saveSessionStorage(REFRESH_TOKEN, res.result.refresh_token);
       props?.options?.onSuccess && props.options.onSuccess(res, ...rest);
     },
     onError: (res, ...rest) => {

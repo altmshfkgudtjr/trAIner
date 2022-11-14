@@ -6,12 +6,16 @@ import {
 // store
 import * as themeSystem from 'store/system/theme';
 import * as modalSystem from 'store/system/modal';
+import * as snackbarSystem from 'store/system/snackbar';
+import * as user from 'store/user';
 // types
 import type { RecoilState, RecoilValue } from 'recoil';
 
 const rootState = {
   themeSystem,
   modalSystem,
+  snackbarSystem,
+  user,
 };
 
 export type RootState = typeof rootState;

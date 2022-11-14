@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import request from 'api';
+import { useSetRecoilState } from 'store';
 // components
 import ErrorBoundary from 'components/containers/commons/ErrorBoundary';
 import {
@@ -24,6 +25,14 @@ import 'public/font.css';
 import type { CustomAppProps } from 'next/app';
 import type { Theme } from 'tds/types/Palette';
 import type { User } from 'types/api/user';
+
+const UserDataProvider = ({ children, profile }) => {
+  const setUser = useSetRecoilState(state => state.user.default);
+  useEffect(() => {
+    setUser(profile);
+  }, [setUser, profile]);
+  return children;
+};
 
 const App = ({ Component, pageProps }: CustomAppProps<PageProps>) => {
   const [themeType, setThemeType] = useState(pageProps.theme);
@@ -55,7 +64,9 @@ const App = ({ Component, pageProps }: CustomAppProps<PageProps>) => {
             {/* Style */}
             <GlobalStyles />
             {/* App */}
-            <ErrorBoundary>{getLayout(<Component {...pageProps} />)}</ErrorBoundary>
+            <UserDataProvider profile={pageProps.profile}>
+              <ErrorBoundary>{getLayout(<Component {...pageProps} />)}</ErrorBoundary>
+            </UserDataProvider>
             {/* Modal */}
             <ModalProvider />
             {/* Snackbar */}
@@ -89,7 +100,7 @@ App.getInitialProps = async ({ ctx, Component }) => {
   }
 
   // Server-Side
-  let profile = null;
+  let profile: User | null = null;
   if (ctx.res) {
     try {
       profile = await request.get(`/api/v1/users/me`);
@@ -105,7 +116,7 @@ App.getInitialProps = async ({ ctx, Component }) => {
 type PageProps = {
   nonce?: string;
   theme?: Theme;
-  profie?: User;
+  profile?: User;
 };
 
 export default App;

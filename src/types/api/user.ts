@@ -18,9 +18,13 @@ export type SignInMutation = BaseMutation<
     isPersist: boolean;
   },
   {
-    refreshToken: string;
+    refresh_token: string;
   }
 >;
+
+/* ================================================== */
+
+export type SignOutMutation = BaseMutation<{}, {}>;
 
 /* ================================================== */
 
@@ -30,7 +34,7 @@ export type SignUpMutation = BaseMutation<
     pw: string;
   },
   {
-    refreshToken: string;
+    refresh_token: string;
   }
 >;
 
@@ -39,7 +43,7 @@ export type SignUpMutation = BaseMutation<
 export type RefreshTokenMutation = BaseMutation<
   {},
   {
-    refreshToken: string;
+    refresh_token: string;
   }
 >;
 
@@ -52,8 +56,9 @@ export type RefreshTokenMutation = BaseMutation<
  * 유저 타입
  */
 export type User = {
-  id: string;
-  name: string;
+  _id: string;
+  userId: string;
+  isHotUser: boolean;
 };
 
 /* ================================================== */
