@@ -9,7 +9,6 @@ import 풀이영역 from 'components/containers/problem/shell/풀이영역';
 import { useProblemQuery } from 'api/problem';
 // hooks
 import useMetaData from 'hooks/commons/useMetaData';
-import { mediaQuery } from 'tds';
 
 /** 문제 페이지 */
 const ProlbemPage = () => {

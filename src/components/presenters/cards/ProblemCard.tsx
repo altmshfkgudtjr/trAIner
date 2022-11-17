@@ -3,7 +3,7 @@ import Link from 'next/link';
 // components
 import ProblemBadge from 'components/atoms/ProblemBadge';
 // styles
-import { typo, mediaQuery, lib, animations } from 'tds';
+import { typo, mediaQuery, lib } from 'tds';
 // types
 import type { Problem } from 'types/api/problem';
 

@@ -106,23 +106,6 @@ const ContentWrapper = styled.div`
   }
 `;
 
-const Button = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 32px;
-  padding: 0 12px;
-  border-radius: 4px;
-  background-color: ${({ theme }) => theme.text.f3};
-  color: ${({ theme }) => theme.semantic.black};
-  transition: 0.1s ease;
-
-  ${lib.onlyHover(css`
-    background-color: ${({ theme }) => theme.primary};
-    color: ${({ theme }) => theme.text.f2};
-  `)};
-`;
-
 type Props = {
   profile?: User;
 };

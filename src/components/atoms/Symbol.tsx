@@ -47,14 +47,6 @@ const Wrapper = styled.div`
   justify-content: center;
 `;
 
-const Img = styled.img<{
-  w?: number;
-  h?: number;
-}>`
-  width: ${({ w }) => (w ? `${w}px` : '100%')};
-  height: ${({ h }) => (h ? `${h}px` : '100%')};
-`;
-
 type Props = {
   type?: 'Color' | 'White';
   w?: number;
