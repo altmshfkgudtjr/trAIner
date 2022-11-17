@@ -1,38 +1,41 @@
 import styled, { css } from 'styled-components';
 import Split from 'react-split';
+// components
+import Loading from 'components/atoms/Loading';
+// hooks
+import useMatchMedia from 'hooks/dom/useMatchMedia';
+// styles
+import { boxShadow, lib } from 'tds';
 // types
 import type { ReactNode } from 'react';
-import { boxShadow, lib } from 'tds';
 
 /**
  * 대시보드 조절이 가능한 3등분 영역
  * - 문제풀이 View
  */
-const ResizableArea = ({ left, top, bottom }: Props) => {
+const ResizableArea = ({ left, right }: Props) => {
+  const { isMatch: isDesktop, status: mediaStatus } = useMatchMedia({ media: 'medium' });
+
+  if (mediaStatus !== 'done') {
+    return <Loading />;
+  }
+
   return (
-    <SplitLayout
-      direction="horizontal"
-      sizes={[40, 60]}
-      minSize={300}
-      gutterSize={12}
-      style={{ height: '100%' }}
-    >
-      <Area id="shell-left">{left}</Area>
-      <SplitLayout
-        direction="vertical"
-        sizes={[55, 45]}
-        minSize={100}
-        gutterSize={12}
-        style={{ width: '100%' }}
-      >
-        <Area id="shell-right-top" isDeep>
-          {top}
-        </Area>
-        <Area id="shell-right-bottom" isDeep>
-          {bottom}
-        </Area>
-      </SplitLayout>
-    </SplitLayout>
+    <>
+      {!isDesktop && <Area id="shell-left">{left}</Area>}
+      {isDesktop && (
+        <SplitLayout
+          direction="horizontal"
+          sizes={[40, 60]}
+          minSize={300}
+          gutterSize={12}
+          style={{ height: '100%' }}
+        >
+          <Area id="shell-left">{left}</Area>
+          <Area id="shell-right">{right}</Area>
+        </SplitLayout>
+      )}
+    </>
   );
 };
 
@@ -71,6 +74,10 @@ const Area = styled.div<{ isDeep?: boolean }>`
   box-sizing: border-box;
   overflow-y: auto;
 
+  &#shell-right {
+    padding: 0;
+  }
+
   &::-webkit-scrollbar {
     width: 10px;
     height: 10px;
@@ -91,8 +98,7 @@ const Area = styled.div<{ isDeep?: boolean }>`
 
 type Props = {
   left: ReactNode;
-  top: ReactNode;
-  bottom: ReactNode;
+  right: ReactNode;
 };
 
 export default ResizableArea;

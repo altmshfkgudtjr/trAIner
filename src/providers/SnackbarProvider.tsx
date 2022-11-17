@@ -20,7 +20,7 @@ const SnackbarProvider = ({
   stackEnabled = true,
   maxCount = 3,
 }: SnackbarOption) => {
-  const isNotMobile = useMatchMedia({ media: 'medium' });
+  const { isMatch: isNotMobile } = useMatchMedia({ media: 'medium' });
   const { snackbarList, removeSnackbar } = useSnackbar();
   const isExist = snackbarList.length > 0;
 

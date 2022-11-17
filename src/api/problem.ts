@@ -76,9 +76,9 @@ export const useHotUserProblemQuery = (props?: Select<types.HotUserProblemQuery,
   return useQuery<Select<types.HotUserProblemQuery, 'Response'>, AxiosError>(
     ['useHotUserProblemQuery', props?.type],
     () =>
-      request.get(`/api/v1/problems/hotuser/${props?.type}`, {
+      request.get(`/api/v1/problems/hot`, {
         params: {
-          problemId: props?.problemId,
+          feed: props?.type,
         },
       }),
     { ...props?.options },
@@ -93,7 +93,12 @@ export const useHotUserProblemQuery = (props?: Select<types.HotUserProblemQuery,
 export const useColdUserProblemQuery = (props?: Select<types.ColdUserProblemQuery, 'Props'>) => {
   return useQuery<Select<types.ColdUserProblemQuery, 'Response'>, AxiosError>(
     ['useColdUserProblemQuery', props?.type],
-    () => request.get(`/api/v1/problems/colduser/${props?.type}`),
+    () =>
+      request.get(`/api/v1/problems/cold`, {
+        params: {
+          feed: props?.type,
+        },
+      }),
     { ...props?.options },
   );
 };

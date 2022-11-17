@@ -14,9 +14,9 @@ import { mediaQuery, typo } from 'tds';
 /** 문제 목록 페이지 */
 const ProlbemListPage = () => {
   const { MetaTitle } = useMetaData();
-  // const { ValidAuthProvider } = useAuthWall({ isRedirect: true });
+  const { ValidAuthProvider } = useAuthWall({ isRedirect: true });
 
-  const { data: wrongProblemList } = useColdUserProblemQuery({ type: 'wrong' });
+  const { data: wrongProblemList } = useColdUserProblemQuery({ type: 'vulnerable' });
   const { data: popularProblemList } = useColdUserProblemQuery({ type: 'popular' });
   const { data: trialProblemList } = useColdUserProblemQuery({ type: 'trial' });
 
@@ -24,51 +24,51 @@ const ProlbemListPage = () => {
     <>
       <MetaTitle content="커리큘럼" />
 
-      {/* <ValidAuthProvider> */}
-      <Wrapper>
-        {!!wrongProblemList?.result && (
-          <section>
-            <Title>생각보다 많이 틀리는 문제</Title>
+      <ValidAuthProvider>
+        <Wrapper>
+          {!!wrongProblemList?.result && (
+            <section>
+              <Title>생각보다 많이 틀리는 문제</Title>
 
-            <CardWrapper>
-              {wrongProblemList?.result?.map(problem => (
-                <ProblemCard key={problem.problemId} problem={problem} />
-              ))}
-            </CardWrapper>
-          </section>
-        )}
+              <CardWrapper>
+                {wrongProblemList?.result?.map(problem => (
+                  <ProblemCard key={problem.problemId} problem={problem} />
+                ))}
+              </CardWrapper>
+            </section>
+          )}
 
-        {!!popularProblemList?.result && (
-          <section>
-            <Title>요즘 유행하는 문제</Title>
+          {!!popularProblemList?.result && (
+            <section>
+              <Title>요즘 유행하는 문제</Title>
 
-            <CardWrapper>
-              {popularProblemList?.result?.map(problem => (
-                <ProblemCard key={problem.problemId} problem={problem} />
-              ))}
-            </CardWrapper>
-          </section>
-        )}
+              <CardWrapper>
+                {popularProblemList?.result?.map(problem => (
+                  <ProblemCard key={problem.problemId} problem={problem} />
+                ))}
+              </CardWrapper>
+            </section>
+          )}
 
-        {!!trialProblemList?.result && (
-          <section>
-            <Title>많은 사람들이 시도는 해보는 책</Title>
+          {!!trialProblemList?.result && (
+            <section>
+              <Title>많은 사람들이 시도는 해보는 책</Title>
 
-            <CardWrapper>
-              {trialProblemList?.result?.map(problem => (
-                <ProblemCard key={problem.problemId} problem={problem} />
-              ))}
-            </CardWrapper>
-          </section>
-        )}
-      </Wrapper>
-      {/* </ValidAuthProvider> */}
+              <CardWrapper>
+                {trialProblemList?.result?.map(problem => (
+                  <ProblemCard key={problem.problemId} problem={problem} />
+                ))}
+              </CardWrapper>
+            </section>
+          )}
+        </Wrapper>
+      </ValidAuthProvider>
     </>
   );
 };
 
 ProlbemListPage.getLayout = page => {
-  return <Layout profile={page.props.profie}>{page}</Layout>;
+  return <Layout profile={page.props.profile}>{page}</Layout>;
 };
 
 const Wrapper = styled(DashboardLayout)`
@@ -108,6 +108,10 @@ const CardWrapper = styled.div`
   justify-content: flex-start;
   gap: 24px;
   overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export default ProlbemListPage;

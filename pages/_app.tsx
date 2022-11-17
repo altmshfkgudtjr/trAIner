@@ -29,7 +29,9 @@ import type { User } from 'types/api/user';
 const UserDataProvider = ({ children, profile }) => {
   const setUser = useSetRecoilState(state => state.user.default);
   useEffect(() => {
-    setUser(profile);
+    if (profile) {
+      setUser(profile);
+    }
   }, [setUser, profile]);
   return children;
 };
@@ -103,9 +105,14 @@ App.getInitialProps = async ({ ctx, Component }) => {
   let profile: User | null = null;
   if (ctx.res) {
     try {
-      profile = await request.get(`/api/v1/users/me`);
+      profile = await request
+        .get(`${process.env.NEXT_PUBLIC_API_SERVER}/api/v1/users/me`, {
+          headers: ctx?.req?.headers?.cookie ? { cookie: ctx.req.headers.cookie } : undefined,
+          withCredentials: true,
+        })
+        .then((res: any) => res.result);
       Object.assign(pageProps, { profile });
-    } catch {
+    } catch (err) {
       profile = null;
     }
   }

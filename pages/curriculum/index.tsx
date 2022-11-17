@@ -4,6 +4,7 @@ import { useRecoilValue } from 'store';
 import { DashboardLayout } from 'tds/layouts';
 import Layout from 'components/layouts';
 import ProblemCard from 'components/presenters/cards/ProblemCard';
+import Loading from 'components/atoms/Loading';
 // api
 import { useSolvedProblemQuery, useHotUserProblemQuery } from 'api/problem';
 // hooks
@@ -17,106 +18,92 @@ const CurriculumPage = () => {
   const user = useRecoilValue(state => state.user.default);
 
   const { MetaTitle } = useMetaData();
-  // const { ValidAuthProvider } = useAuthWall({ isRedirect: true });
+  const { ValidAuthProvider } = useAuthWall({ isRedirect: true });
 
-  const { data: solvedProblem } = useSolvedProblemQuery({
+  const { data: solvedProblem, isLoading: isLoadingSolvedProblem } = useSolvedProblemQuery({
     options: {
       enabled: !!user?.userId,
     },
   });
-  const useHotUserProblemOptions = { enabled: !!solvedProblem?.result?.problemId };
-  const { data: clickProblemList } = useHotUserProblemQuery({
-    problemId: solvedProblem?.result?.[0].problemId as string,
+  const { data: clickProblemList, isLoading: isLoadingClick } = useHotUserProblemQuery({
     type: 'click',
-    options: useHotUserProblemOptions,
   });
-  const { data: similarProblemList } = useHotUserProblemQuery({
-    problemId: solvedProblem?.result?.[0].problemId as string,
+  const { data: similarProblemList, isLoading: isLoadingSimilar } = useHotUserProblemQuery({
     type: 'similar',
-    options: useHotUserProblemOptions,
   });
-  const { data: unfamiliarProblemList } = useHotUserProblemQuery({
-    problemId: solvedProblem?.result?.[0].problemId as string,
+  const { data: unfamiliarProblemList, isLoading: isLoadingUnfamiliar } = useHotUserProblemQuery({
     type: 'unfamiliar',
-    options: useHotUserProblemOptions,
   });
-  const { data: wrongProblemList } = useHotUserProblemQuery({
-    problemId: solvedProblem?.result?.[0].problemId as string,
-    type: 'wrong',
-    options: useHotUserProblemOptions,
+  const { data: wrongProblemList, isLoading: isLoadingWrong } = useHotUserProblemQuery({
+    type: 'vulnerable',
   });
 
   return (
     <>
       <MetaTitle content="커리큘럼" />
 
-      {/* <ValidAuthProvider> */}
-      <Wrapper>
-        {!!solvedProblem?.result && (
+      <ValidAuthProvider>
+        <Wrapper>
           <section>
             <Title>방금 내가 풀었던 문제</Title>
 
             <CardWrapper>
-              <ProblemCard problem={solvedProblem.result} />
+              {isLoadingSolvedProblem && <Loading />}
+              {!!solvedProblem?.result && <ProblemCard problem={solvedProblem.result} />}
             </CardWrapper>
           </section>
-        )}
 
-        {!!similarProblemList?.result && (
           <section>
             <Title>방금 풀었던 문제랑 비슷한 유형</Title>
 
             <CardWrapper>
+              {isLoadingSimilar && <Loading />}
               {similarProblemList?.result?.map(problem => (
                 <ProblemCard key={problem.problemId} problem={problem} />
-              ))}
+              )) ?? null}
             </CardWrapper>
           </section>
-        )}
 
-        {!!wrongProblemList?.result && (
           <section>
             <Title>내가 틀릴 가능성이 높은 문제</Title>
 
             <CardWrapper>
+              {isLoadingWrong && <Loading />}
               {wrongProblemList?.result?.map(problem => (
                 <ProblemCard key={problem.problemId} problem={problem} />
-              ))}
+              )) ?? null}
             </CardWrapper>
           </section>
-        )}
 
-        {!!unfamiliarProblemList?.result && (
           <section>
             <Title>내가 풀어보지 않았던 유형별 문제</Title>
 
             <CardWrapper>
+              {isLoadingUnfamiliar && <Loading />}
               {unfamiliarProblemList?.result?.map(problem => (
                 <ProblemCard key={problem.problemId} problem={problem} />
-              ))}
+              )) ?? null}
             </CardWrapper>
           </section>
-        )}
 
-        {!!clickProblemList?.result && (
           <section>
             <Title>내가 흥미로울 것 같은 문제</Title>
 
             <CardWrapper>
+              {isLoadingClick && <Loading />}
               {clickProblemList?.result?.map(problem => (
                 <ProblemCard key={problem.problemId} problem={problem} />
-              ))}
+              )) ?? null}
             </CardWrapper>
           </section>
-        )}
-      </Wrapper>
-      {/* </ValidAuthProvider> */}
+        </Wrapper>
+      </ValidAuthProvider>
     </>
   );
 };
 
 CurriculumPage.getLayout = page => {
-  return <Layout profile={page.props.profie}>{page}</Layout>;
+  return <Layout profile={page.props.profile}>{page}</Layout>;
 };
 
 const Wrapper = styled(DashboardLayout)`
@@ -140,11 +127,13 @@ const Wrapper = styled(DashboardLayout)`
 `;
 
 const Title = styled.h1`
+  padding: 0 16px;
   margin-bottom: 12px;
   ${typo.headline1};
   color: ${({ theme }) => theme.text.f1};
 
   ${mediaQuery.medium} {
+    padding: 0 24px;
     margin-bottom: 24px;
     ${typo.Big1};
   }
@@ -155,7 +144,18 @@ const CardWrapper = styled.div`
   align-items: center;
   justify-content: flex-start;
   gap: 24px;
+  height: 240px;
+  padding: 0 16px;
   overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  ${mediaQuery.medium} {
+    height: 300px;
+    padding: 0 24px;
+  }
 `;
 
 export default CurriculumPage;

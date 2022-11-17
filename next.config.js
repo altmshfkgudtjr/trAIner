@@ -14,6 +14,8 @@ const withPlugins = require("next-compose-plugins");
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true",
 });
+/** Monaco Editor Plugins */
+const withTM = require('next-transpile-modules')(['@monaco-editor/react']);
 
 /* Production 환경 여부 */
 const isProd = process.env.NODE_ENV === "production";
@@ -46,6 +48,8 @@ const nextConfig = {
 	experimental: {
 		// [베타] app 디렉토리
 		appDir: false,
+		// 스크롤 복원 기능
+		scrollRestoration: true,
 	},
 
   // 폰트 최적화 여부
@@ -121,7 +125,7 @@ const nextConfig = {
 			// API 서버
 			{
         source: "/api/:path*",
-        destination: `${process.env.NEXT_PUBLIC_API_SERVER}/:path*`,
+        destination: `${process.env.NEXT_PUBLIC_API_SERVER}/api/:path*`,
       },
     ];
 
@@ -132,4 +136,4 @@ const nextConfig = {
   },
 };
 
-module.exports = withPlugins([withBundleAnalyzer], nextConfig);
+module.exports = withPlugins([withBundleAnalyzer, withTM], nextConfig);

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useRecoilValue } from 'store';
 // components
 import HeaderLayout from 'components/containers/headers';
 import MainHeader from 'components/containers/headers/Main';
@@ -15,12 +16,14 @@ import type { User } from 'types/api/user';
  * @param props.desktopHeader 데스크탑 헤더
  * @param props.mobileHeader 모바일 헤더
  */
-const Layout = ({ desktopHeader, mobileHeader, profile, children }: PropsWithChildren<Props>) => {
+const Layout = ({ desktopHeader, mobileHeader, children }: PropsWithChildren<Props>) => {
+  const user = useRecoilValue(state => state.user.default);
+
   return (
     <>
       <HeaderLayout
-        desktop={desktopHeader ?? <MainHeader profile={profile} />}
-        mobile={mobileHeader ?? <MobileMainHeader profile={profile} />}
+        desktop={desktopHeader ?? <MainHeader profile={user ?? undefined} />}
+        mobile={mobileHeader ?? <MobileMainHeader profile={user ?? undefined} />}
       />
       <Wrapper>
         <Body>{children}</Body>

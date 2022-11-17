@@ -12,26 +12,28 @@ import WhiteSymbolImage from 'public/logo/white-simple.png';
  * 로고
  */
 const Logo = ({ type = 'White', width, height }: Props) => {
-  const isDesktop = useMatchMedia({ media: 'medium' });
+  const { isMatch: isDesktop, status } = useMatchMedia({ media: 'medium' });
 
   return (
     <Wrapper>
       <LogoLink href="/">
-        <Image
-          src={
-            type === 'White'
-              ? isDesktop
-                ? LogoImage
-                : SymbolImage
-              : isDesktop
-              ? WhiteLogoImage
-              : WhiteSymbolImage
-          }
-          alt="logo"
-          width={width}
-          height={height}
-          priority
-        />
+        {status === 'done' && (
+          <Image
+            src={
+              type === 'White'
+                ? isDesktop
+                  ? LogoImage
+                  : SymbolImage
+                : isDesktop
+                ? WhiteLogoImage
+                : WhiteSymbolImage
+            }
+            alt="logo"
+            width={width}
+            height={height}
+            priority
+          />
+        )}
       </LogoLink>
     </Wrapper>
   );

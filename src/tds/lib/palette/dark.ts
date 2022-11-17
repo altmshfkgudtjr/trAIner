@@ -6,7 +6,7 @@ const darkTheme: ThemeVariables = {
   themeType: 'dark',
 
   // Primary
-  primary: '#6a35bb',
+  primary: '#7f43dc',
 
   // Background
   background: {

@@ -1,4 +1,4 @@
-import { useLayoutEffect } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import Router from 'next/router';
 // components
@@ -12,7 +12,7 @@ import { useProfileQuery } from 'api/user';
 const useAuthWall = ({ isRedirect }: Props) => {
   const { status: userStatus, data: userData } = useProfileQuery();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (userStatus !== 'loading' && !userData && isRedirect) {
       Router.replace({
         pathname: '/sign-in',

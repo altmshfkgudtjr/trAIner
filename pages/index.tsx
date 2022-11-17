@@ -22,6 +22,9 @@ const HomePage = () => {
           <Link href="/curriculum" style={{ display: 'flex' }}>
             <TextButton size="Large">커리큘럼 바로가기</TextButton>
           </Link>
+          <Link href="/problems" style={{ display: 'flex' }}>
+            <TextButton size="Large">알고리즘 둘러보기</TextButton>
+          </Link>
         </Title>
       </Section>
 
@@ -42,7 +45,7 @@ const HomePage = () => {
   );
 };
 HomePage.getLayout = page => {
-  return <Layout profile={page.props.profie}>{page}</Layout>;
+  return <Layout profile={page.props.profile}>{page}</Layout>;
 };
 
 const Blink = keyframes`

@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 // store
 import themeState, { themeModeState, themeSystemState } from 'store/system/theme';
 // lib
-import * as cookieUtils from 'utils/cookie';
+import * as cookieUtils from 'utils/helpers/cookie';
 // styles
 import themePalette from 'tds/lib/palette';
 // types

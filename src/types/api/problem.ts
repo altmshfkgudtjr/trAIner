@@ -38,8 +38,7 @@ export type SubmitProblemMutation = BaseMutation<
 
 export type HotUserProblemQuery = BaseQuery<
   {
-    problemId: string;
-    type: 'click' | 'wrong' | 'similar' | 'unfamiliar';
+    type: 'click' | 'vulnerable' | 'similar' | 'unfamiliar';
   },
   Problem[]
 >;
@@ -48,7 +47,7 @@ export type HotUserProblemQuery = BaseQuery<
 
 export type ColdUserProblemQuery = BaseQuery<
   {
-    type: 'wrong' | 'popular' | 'trial';
+    type: 'vulnerable' | 'popular' | 'trial';
   },
   Problem[]
 >;

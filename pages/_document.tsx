@@ -38,6 +38,7 @@ class MyDocument extends Document {
           <meta charSet="utf-8" />
           <meta name="robots" content="index, follow" />
           <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+          <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests" />
           <DefaultMeta />
           <link rel="canonical" href={process.env.NEXT_PUBLIC_DEFAULT_HOST} />
           <link rel="preconnect" href={process.env.NEXT_PUBLIC_API_SERVER} crossOrigin="true" />

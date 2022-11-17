@@ -28,7 +28,7 @@ const MainHeader = ({ profile }: Props) => {
                 size="ExtraSmall"
                 color={theme.mode === 'Light' ? currentTheme.semantic.white : currentTheme.primary}
               >
-                {profile.name}님
+                {profile.userId}
               </TextButton>
             </Link>
           )}

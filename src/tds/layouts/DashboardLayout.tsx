@@ -6,15 +6,15 @@ import { mediaQuery } from 'tds';
  * 대시보드 레이아웃
  */
 const DashboardLayout = styled.div`
-  padding: 0 16px 40px;
+  padding: 0 0 40px;
   margin: 0 auto;
 
   ${mediaQuery.medium} {
-    padding: 0 20px 160px;
+    padding: 0 0 160px;
   }
 
   ${mediaQuery.large} {
-    padding: 0 20px 240px;
+    padding: 0 0 240px;
   }
 `;
 

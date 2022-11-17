@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 // components
 import { FillButton } from 'tds/components/buttons';
 import Badge from 'components/presenters/dashboard/shell/Badge';
@@ -49,7 +49,7 @@ const 문제출제 = ({
     });
   };
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     initData?.title && setTitle(initData.title);
     initData?.content && setContent(initData.content);
   }, [initData]);

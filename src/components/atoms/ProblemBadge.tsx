@@ -6,18 +6,24 @@ import { typo } from 'tds';
  * 문제 타입 뱃지
  */
 const ProblemBadge = styled.span<{ type?: BadgeType }>`
-  display: inline-block;
+  display: block;
+  width: fit-content;
   padding: 3px 6px;
-  margin-bottom: 8px;
   border-radius: 4px;
   background-color: ${({ type, theme }) =>
     !type
       ? theme.background.bg1
       : type === 'Easy'
-      ? theme.primary
+      ? theme.themeType === 'dark'
+        ? '#3c54ee'
+        : '#adb6ff'
       : type === 'Normal'
-      ? '#d8a20d'
-      : '#dd1c1c'};
+      ? theme.themeType === 'dark'
+        ? '#d8a20d'
+        : '#ffe23e'
+      : theme.themeType === 'dark'
+      ? '#dd1c1c'
+      : '#ff9797'};
   color: ${({ theme }) => theme.text.f2};
   ${typo.badge};
 `;

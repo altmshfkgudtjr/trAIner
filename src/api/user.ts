@@ -99,7 +99,7 @@ export const useSignUpMutation = (props?: Select<types.SignUpMutation, 'Props'>)
     Select<types.SignUpMutation, 'Response'>,
     AxiosError,
     Select<types.SignUpMutation, 'Variables'>
-  >(data => request.post(`/api/v1/sign-up`, data), {
+  >(data => request.post(`/api/auth/sign-up`, data), {
     ...props?.options,
     onSuccess: (res, ...rest) => {
       saveSessionStorage(REFRESH_TOKEN, res.result.refresh_token);

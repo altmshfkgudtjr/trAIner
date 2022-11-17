@@ -1,22 +1,18 @@
 import styled from 'styled-components';
 import { useRef } from 'react';
+// components
+import Badge from 'components/presenters/problem/shell/Badge';
 // styles
 import { typo } from 'tds';
 // types
+import type { Problem } from 'types/api/problem';
 import type { InputHTMLAttributes } from 'react';
 
 /**
  * 쉘 - 문제 설명
- * @param props
- * @param props.content 문제 설명
- * @param props.isInput 입력창으로 전환 여부
  */
-const ProblemContent = ({ content, isInput = false, ...props }: Props) => {
+const ProblemContent = ({ problem }: Props) => {
   const target = useRef<HTMLTextAreaElement>(null);
-
-  const onInput = e => {
-    e.target.parentNode.dataset.value = e.target.value;
-  };
 
   const onFocus = () => {
     if (!target.current) {
@@ -28,18 +24,47 @@ const ProblemContent = ({ content, isInput = false, ...props }: Props) => {
 
   return (
     <Wrapper onClick={onFocus}>
-      {isInput && (
-        <Label>
-          <Textarea
-            ref={target}
-            placeholder="문제 설명을 작성해주세요"
-            onInput={onInput}
-            rows={1}
-            {...props}
-          />
-        </Label>
+      <ContentWrapper>
+        <Content dangerouslySetInnerHTML={{ __html: problem?.description ?? '' }} />
+      </ContentWrapper>
+
+      {problem?.limit && (
+        <ContentWrapper>
+          <Badge text="문제 조건" />
+          <Content dangerouslySetInnerHTML={{ __html: problem?.limit ?? '' }} />
+        </ContentWrapper>
       )}
-      {!isInput && <Content>{content}</Content>}
+
+      <ContentWrapper>
+        <Badge text="입력값" />
+        <Content dangerouslySetInnerHTML={{ __html: problem?.input ?? '' }} />
+        <Badge text="출력값" />
+        <Content dangerouslySetInnerHTML={{ __html: problem?.output ?? '' }} />
+      </ContentWrapper>
+
+      {problem?.example.map((v, idx) => (
+        <ExampleWrapper key={idx}>
+          <ExampleNumber>예제 {idx + 1}</ExampleNumber>
+          {v.sample_explain && (
+            <>
+              <ExampleBadge>설명</ExampleBadge>
+              <Content dangerouslySetInnerHTML={{ __html: v.sample_explain ?? '' }} />
+            </>
+          )}
+          {v.samle_input && (
+            <>
+              <ExampleBadge>입력값</ExampleBadge>
+              <Content dangerouslySetInnerHTML={{ __html: v.samle_input ?? '' }} />
+            </>
+          )}
+          {v.sample_output && (
+            <>
+              <ExampleBadge>출력값</ExampleBadge>
+              <Content dangerouslySetInnerHTML={{ __html: v.sample_output ?? '' }} />
+            </>
+          )}
+        </ExampleWrapper>
+      ))}
     </Wrapper>
   );
 };
@@ -50,55 +75,46 @@ const Wrapper = styled.section`
   cursor: text;
 `;
 
+const ContentWrapper = styled.div`
+  position: relative;
+  margin-bottom: 32px;
+`;
+
+const ExampleBadge = styled.div``;
+const ExampleNumber = styled.p``;
+const ExampleWrapper = styled(ContentWrapper)`
+  padding: 16px;
+  border: 1px solid ${({ theme }) => theme.border.b2};
+  border-radius: 8px;
+
+  ${ExampleNumber} {
+    position: relative;
+    width: fit-content;
+    padding: 0 8px;
+    ${typo.badge};
+    color: ${({ theme }) => theme.text.f2};
+    background-color: ${({ theme }) => theme.background.bg2};
+    transform: translateY(-20px);
+  }
+
+  ${ExampleBadge} {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 12px;
+    ${typo.value3};
+    color: ${({ theme }) => theme.primary};
+  }
+`;
+
 const Content = styled.div`
   white-space: pre-wrap;
   ${typo.body3};
   color: ${({ theme }) => theme.text.f1};
 `;
 
-const Label = styled.label`
-  display: inline-grid;
-  vertical-align: top;
-  align-items: stretch;
-  position: relative;
-  width: 100%;
-  border: none;
-
-  &::after,
-  textarea {
-    ${typo.body2};
-    grid-area: 2 / 1;
-    background: none;
-    appearance: none;
-  }
-
-  &::after {
-    content: attr(data-value) ' ';
-    visibility: hidden;
-    white-space: pre-wrap;
-  }
-`;
-
-const Textarea = styled.textarea`
-  width: 100%;
-  white-space: pre-wrap;
-  background-color: transparent;
-  ${typo.body2};
-  color: ${({ theme }) => theme.text.f1};
-  resize: none;
-
-  &::placeholder {
-    color: ${({ theme }) => theme.text.f4};
-  }
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`;
-
 type Props = {
-  content?: string;
-  isInput?: boolean;
+  problem?: Problem;
 } & InputHTMLAttributes<HTMLTextAreaElement>;
 
 export default ProblemContent;

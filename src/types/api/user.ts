@@ -59,6 +59,9 @@ export type User = {
   _id: string;
   userId: string;
   isHotUser: boolean;
+  name: string;
+  created_at: string;
+  updated_at: string;
 };
 
 /* ================================================== */
