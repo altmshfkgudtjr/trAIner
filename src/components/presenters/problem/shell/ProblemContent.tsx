@@ -59,10 +59,10 @@ const ProblemContent = ({ problem }: Props) => {
               <Content dangerouslySetInnerHTML={{ __html: v.sample_explain ?? '' }} />
             </>
           )}
-          {v.samle_input && (
+          {v.sample_input && (
             <>
               <ExampleBadge>입력값</ExampleBadge>
-              <Content dangerouslySetInnerHTML={{ __html: v.samle_input ?? '' }} />
+              <Content dangerouslySetInnerHTML={{ __html: v.sample_input ?? '' }} />
             </>
           )}
           {v.sample_output && (
@@ -109,13 +109,14 @@ const ExampleWrapper = styled(ContentWrapper)`
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
     ${typo.value3};
     color: ${({ theme }) => theme.primary};
   }
 `;
 
 const Content = styled.div`
+  margin-bottom: 16px;
   white-space: pre-wrap;
   ${typo.body2};
   color: ${({ theme }) => theme.text.f1};

@@ -10,7 +10,7 @@ import type { Problem } from 'types/api/problem';
 /**
  * 문제 카드
  */
-const ProblemCard = ({ problem }: Props) => {
+const ProblemCard = ({ problem, flexible }: Props) => {
   const problemType = problem.level < 8 ? 'Easy' : problem.level < 11 ? 'Normal' : 'Hard';
 
   const initRandomColor = (key: string) => {
@@ -20,7 +20,7 @@ const ProblemCard = ({ problem }: Props) => {
 
   return (
     <Link href={`/problem/${problem.problemId}`}>
-      <Wrapper>
+      <Wrapper flexible={flexible}>
         <div>
           <BadgeWrapper>
             <ProblemBadge type={problemType}>LV.{problem.level}</ProblemBadge>
@@ -49,16 +49,16 @@ const ProblemCard = ({ problem }: Props) => {
   );
 };
 
-const Wrapper = styled.div<{ color?: string }>`
+const Wrapper = styled.div<{ flexible?: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   position: relative;
-  width: 240px;
+  width: ${({ flexible }) => (flexible ? 'auto' : '240px')};
   height: 240px;
   padding: 16px;
   border-radius: 4px;
-  background-color: ${({ color, theme }) => color ?? theme.background.bg4};
+  background-color: ${({ theme }) => theme.background.bg4};
   ${typo.headline3};
   color: ${({ theme }) => theme.text.f2};
   word-break: keep-all;
@@ -66,7 +66,7 @@ const Wrapper = styled.div<{ color?: string }>`
   transition: 0.2s ease;
 
   ${mediaQuery.medium} {
-    width: 300px;
+    width: ${({ flexible }) => (flexible ? 'auto' : '300px')};
     height: 300px;
     padding: 24px;
     border-radius: 8px;
@@ -145,6 +145,7 @@ const Count = styled.div`
 
 type Props = {
   problem: Problem;
+  flexible?: boolean;
 };
 
 export default ProblemCard;

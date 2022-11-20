@@ -92,13 +92,16 @@ export const useHotUserProblemQuery = (props?: Select<types.HotUserProblemQuery,
  */
 export const useColdUserProblemQuery = (props?: Select<types.ColdUserProblemQuery, 'Props'>) => {
   return useQuery<Select<types.ColdUserProblemQuery, 'Response'>, AxiosError>(
-    ['useColdUserProblemQuery', props?.type],
-    () =>
-      request.get(`/api/v1/problems/cold`, {
-        params: {
-          feed: props?.type,
-        },
-      }),
+    ['useColdUserProblemQuery', props?.type, props?.content],
+    () => {
+      const params = {
+        feed: props?.type,
+      };
+      if (props?.type === 'algorithm') {
+        Object.assign(params, { content: props.content });
+      }
+      return request.get(`/api/v1/problems/cold`, { params });
+    },
     { ...props?.options },
   );
 };

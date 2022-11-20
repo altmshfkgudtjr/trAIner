@@ -3,11 +3,14 @@ import styled from 'styled-components';
 import { DashboardLayout } from 'tds/layouts';
 import Layout from 'components/layouts';
 import ProblemCard from 'components/presenters/cards/ProblemCard';
+import GroupCard from 'components/presenters/cards/GroupCard';
 // api
 import { useColdUserProblemQuery } from 'api/problem';
 // hooks
 import useMetaData from 'hooks/commons/useMetaData';
 import useAuthWall from 'hooks/commons/useAuthWall';
+// utils
+import { algorithm } from 'utils/constants/algorithm';
 // styles
 import { mediaQuery, typo } from 'tds';
 
@@ -26,6 +29,46 @@ const ProlbemListPage = () => {
 
       <ValidAuthProvider>
         <Wrapper>
+          <section>
+            <Title>알고리즘 집중 트레이닝</Title>
+
+            <CardWrapper>
+              <GroupCard content="dp" name={algorithm['dp']} />
+              <GroupCard content="data_structures" name={algorithm['data_structures']} />
+              <GroupCard content="greedy" name={algorithm['greedy']} />
+              <GroupCard content="graph_traversal" name={algorithm['graph_traversal']} />
+              <GroupCard content="trees" name={algorithm['trees']} />
+              <GroupCard content="bfs" name={algorithm['bfs']} />
+              <GroupCard content="dfs" name={algorithm['dfs']} />
+              <GroupCard content="topological_sorting" name={algorithm['topological_sorting']} />
+              <GroupCard content="floyd_warshall" name={algorithm['floyd_warshall']} />
+              <GroupCard content="dijkstra" name={algorithm['dijkstra']} />
+              <GroupCard content="backtracking" name={algorithm['backtracking']} />
+              <GroupCard content="divide_and_conquer" name={algorithm['divide_and_conquer']} />
+              <GroupCard content="stack" name={algorithm['stack']} />
+              <GroupCard content="queue" name={algorithm['queue']} />
+              <GroupCard content="bellman_ford" name={algorithm['bellman_ford']} />
+              <GroupCard content="implementation" name={algorithm['implementation']} />
+              <GroupCard content="graphs" name={algorithm['graphs']} />
+              <GroupCard content="string" name={algorithm['string']} />
+              <GroupCard content="bruteforcing" name={algorithm['bruteforcing']} />
+              <GroupCard content="sorting" name={algorithm['sorting']} />
+              <GroupCard content="number_theory" name={algorithm['number_theory']} />
+              <GroupCard content="geometry" name={algorithm['geometry']} />
+              <GroupCard content="segtree" name={algorithm['segtree']} />
+              <GroupCard content="binary_search" name={algorithm['binary_search']} />
+              <GroupCard content="math" name={algorithm['math']} />
+              <GroupCard content="regex" name={algorithm['regex']} />
+              <GroupCard content="bitmask" name={algorithm['bitmask']} />
+              <GroupCard content="combinatorics" name={algorithm['combinatorics']} />
+              <GroupCard content="knapsack" name={algorithm['knapsack']} />
+              <GroupCard content="mst" name={algorithm['mst']} />
+              <GroupCard content="priority_queue" name={algorithm['priority_queue']} />
+              <GroupCard content="sieve" name={algorithm['sieve']} />
+              <GroupCard content="prefix_sum" name={algorithm['prefix_sum']} />
+            </CardWrapper>
+          </section>
+
           {!!wrongProblemList?.result && (
             <section>
               <Title>생각보다 많이 틀리는 문제</Title>
