@@ -33,7 +33,7 @@ const AdminPage = () => {
 
   return (
     <>
-      <MetaTitle contenet="관리자" />
+      <MetaTitle content="관리자" />
 
       <Background>
         <ValidAuthProvider>
@@ -240,7 +240,6 @@ const Range = styled.input`
     width: 100%;
     height: 10px;
     cursor: pointer;
-    animate: 0.2s;
     box-shadow: 0px 0px 0px #000000;
     background: #9d74da;
     border-radius: 5px;
