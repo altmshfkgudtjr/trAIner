@@ -29,6 +29,8 @@ const ResizableArea = ({ left, right }: Props) => {
           sizes={[40, 60]}
           minSize={300}
           gutterSize={12}
+          gutterAlign="center"
+          cursor="col-resize"
           style={{ height: '100%' }}
         >
           <Area id="shell-left">{left}</Area>
@@ -40,17 +42,38 @@ const ResizableArea = ({ left, right }: Props) => {
 };
 
 const SplitLayout = styled(Split)<{ direction: 'horizontal' | 'vertical' }>`
+  flex: 1;
   display: flex;
   flex-direction: ${({ direction }) => (direction === 'vertical' ? 'column' : 'row')};
   position: relative;
 
   .gutter {
+    position: relative;
     flex-shrink: 0;
-    background-color: ${({ theme }) => theme.background.bg4};
+    background-color: ${({ theme }) => theme.border.b2};
     transition: background-color 0.2s ease;
 
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 4px;
+      height: 24px;
+      margin: auto;
+      border: 1px solid ${({ theme }) => theme.border.b1};
+      border-width: 0 1px;
+    }
+
     ${lib.onlyHover(css`
-      background-color: ${({ theme }) => theme.background.bg5};
+      background-color: ${({ theme }) => theme.border.b1};
+
+      &::after {
+        border: 1px solid ${({ theme }) => theme.background.bg2};
+        border-width: 0 1px;
+      }
     `)};
   }
 
@@ -68,7 +91,7 @@ const SplitLayout = styled(Split)<{ direction: 'horizontal' | 'vertical' }>`
 `;
 
 const Area = styled.div<{ isDeep?: boolean }>`
-  padding: 20px 20px 0 20px;
+  padding: 20px 20px 200px;
   background-color: ${({ isDeep, theme }) =>
     isDeep ? theme.background.bg3 : theme.background.bg2};
   box-sizing: border-box;

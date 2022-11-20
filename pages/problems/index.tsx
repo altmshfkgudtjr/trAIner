@@ -18,7 +18,7 @@ const ProlbemListPage = () => {
 
   const { data: wrongProblemList } = useColdUserProblemQuery({ type: 'vulnerable' });
   const { data: popularProblemList } = useColdUserProblemQuery({ type: 'popular' });
-  const { data: trialProblemList } = useColdUserProblemQuery({ type: 'trial' });
+  const { data: trialProblemList } = useColdUserProblemQuery({ type: 'click' });
 
   return (
     <>
@@ -52,7 +52,7 @@ const ProlbemListPage = () => {
 
           {!!trialProblemList?.result && (
             <section>
-              <Title>많은 사람들이 시도는 해보는 책</Title>
+              <Title>많은 사람들이 풀어본 문제</Title>
 
               <CardWrapper>
                 {trialProblemList?.result?.map(problem => (
@@ -92,11 +92,13 @@ const Wrapper = styled(DashboardLayout)`
 `;
 
 const Title = styled.h1`
+  padding: 0 16px;
   margin-bottom: 12px;
   ${typo.headline1};
   color: ${({ theme }) => theme.text.f1};
 
   ${mediaQuery.medium} {
+    padding: 0 24px;
     margin-bottom: 24px;
     ${typo.Big1};
   }
@@ -107,10 +109,17 @@ const CardWrapper = styled.div`
   align-items: center;
   justify-content: flex-start;
   gap: 24px;
+  height: 240px;
+  padding: 0 16px;
   overflow-y: auto;
 
   &::-webkit-scrollbar {
     display: none;
+  }
+
+  ${mediaQuery.medium} {
+    height: 300px;
+    padding: 0 24px;
   }
 `;
 

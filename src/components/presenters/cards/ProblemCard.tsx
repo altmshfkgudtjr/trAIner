@@ -21,32 +21,39 @@ const ProblemCard = ({ problem }: Props) => {
   return (
     <Link href={`/problem/${problem.problemId}`}>
       <Wrapper>
-        <BadgeWrapper>
-          <ProblemBadge type={problemType}>LV.{problem.level}</ProblemBadge>
-          문제번호: {problem.problemId}
-        </BadgeWrapper>
+        <div>
+          <BadgeWrapper>
+            <ProblemBadge type={problemType}>LV.{problem.level}</ProblemBadge>
+            문제번호: {problem.problemId}
+          </BadgeWrapper>
 
-        {problem.titleKo}
-        {problem.tags.length > 0 && (
-          <>
-            <Name>분류</Name>
-            <TagWrapper>
-              {problem.tags.map(tag => (
-                <Tag key={tag} color={initRandomColor(tag)}>
-                  {tag}
-                </Tag>
-              ))}
-            </TagWrapper>
-          </>
-        )}
+          {problem.titleKo}
+          {problem.tags.length > 0 && (
+            <>
+              <Name>분류</Name>
+              <TagWrapper>
+                {problem.tags.map(tag => (
+                  <Tag key={tag} color={initRandomColor(tag)}>
+                    {tag}
+                  </Tag>
+                ))}
+              </TagWrapper>
+            </>
+          )}
+        </div>
+        <Count>
+          <span>{problem.correctPeople.toLocaleString('ko-KR')}명</span>이 이 문제를 맞췄어요!
+        </Count>
       </Wrapper>
     </Link>
   );
 };
 
 const Wrapper = styled.div<{ color?: string }>`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   position: relative;
-  display: inline-block;
   width: 240px;
   height: 240px;
   padding: 16px;
@@ -57,7 +64,6 @@ const Wrapper = styled.div<{ color?: string }>`
   word-break: keep-all;
   overflow: hidden;
   transition: 0.2s ease;
-  ${lib.textLineClamp(5)};
 
   ${mediaQuery.medium} {
     width: 300px;
@@ -122,6 +128,19 @@ const Tag = styled.span<{ color: string }>`
   border: 1px solid ${({ color }) => color};
   color: ${({ theme }) => theme.text.f2};
   ${typo.badge};
+`;
+
+const Count = styled.div`
+  text-align: right;
+  ${typo.value2};
+  font-weight: 400;
+  color: ${({ theme }) => theme.text.f4};
+
+  span {
+    margin-right: 1px;
+    font-weight: 500;
+    color: ${({ theme }) => theme.semantic.info};
+  }
 `;
 
 type Props = {

@@ -1,4 +1,4 @@
-import styled, { css, useTheme } from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { useRecoilValue } from 'recoil';
 import Link from 'next/link';
 // components
@@ -8,7 +8,7 @@ import Logo from 'components/atoms/Logo';
 import themeState from 'store/system/theme';
 // styles
 import { mediaQuery, zIndex, typo } from 'tds';
-import { lib, boxShadow, animations } from 'tds';
+import { boxShadow, animations } from 'tds';
 // types
 import type { User } from 'types/api/user';
 

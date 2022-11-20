@@ -6,7 +6,7 @@ import Layout from 'components/layouts';
 import ProblemCard from 'components/presenters/cards/ProblemCard';
 import Loading from 'components/atoms/Loading';
 // api
-import { useSolvedProblemQuery, useHotUserProblemQuery } from 'api/problem';
+import { useCurriculumQuery, useSolvedProblemQuery, useHotUserProblemQuery } from 'api/problem';
 // hooks
 import useMetaData from 'hooks/commons/useMetaData';
 import useAuthWall from 'hooks/commons/useAuthWall';
@@ -25,17 +25,24 @@ const CurriculumPage = () => {
       enabled: !!user?.userId,
     },
   });
-  const { data: clickProblemList, isLoading: isLoadingClick } = useHotUserProblemQuery({
-    type: 'click',
+  const { data: curriculum, isLoading: isLoadingCurriculum } = useCurriculumQuery({
+    problemId: solvedProblem?.result.problemId ?? '',
+    count: 10,
+    options: {
+      enabled: !!solvedProblem?.result,
+    },
   });
   const { data: similarProblemList, isLoading: isLoadingSimilar } = useHotUserProblemQuery({
     type: 'similar',
   });
+  const { data: wrongProblemList, isLoading: isLoadingWrong } = useHotUserProblemQuery({
+    type: 'vulnerable',
+  });
   const { data: unfamiliarProblemList, isLoading: isLoadingUnfamiliar } = useHotUserProblemQuery({
     type: 'unfamiliar',
   });
-  const { data: wrongProblemList, isLoading: isLoadingWrong } = useHotUserProblemQuery({
-    type: 'vulnerable',
+  const { data: clickProblemList, isLoading: isLoadingClick } = useHotUserProblemQuery({
+    type: 'click',
   });
 
   return (
@@ -50,6 +57,17 @@ const CurriculumPage = () => {
             <CardWrapper>
               {isLoadingSolvedProblem && <Loading />}
               {!!solvedProblem?.result && <ProblemCard problem={solvedProblem.result} />}
+            </CardWrapper>
+          </section>
+
+					<section>
+            <Title>커리큘럼 문제 추천</Title>
+
+            <CardWrapper>
+              {isLoadingCurriculum && <Loading />}
+              {curriculum?.result?.map(problem => (
+                <ProblemCard key={problem.problemId} problem={problem} />
+              )) ?? null}
             </CardWrapper>
           </section>
 

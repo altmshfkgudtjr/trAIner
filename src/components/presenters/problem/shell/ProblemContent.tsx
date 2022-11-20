@@ -36,13 +36,21 @@ const ProblemContent = ({ problem }: Props) => {
       )}
 
       <ContentWrapper>
-        <Badge text="입력값" />
-        <Content dangerouslySetInnerHTML={{ __html: problem?.input ?? '' }} />
-        <Badge text="출력값" />
-        <Content dangerouslySetInnerHTML={{ __html: problem?.output ?? '' }} />
+        {problem?.input && (
+          <>
+            <Badge text="입력값" />
+            <Content dangerouslySetInnerHTML={{ __html: problem.input ?? '' }} />
+          </>
+        )}
+        {problem?.output && (
+          <>
+            <Badge text="출력값" />
+            <Content dangerouslySetInnerHTML={{ __html: problem.output ?? '' }} />
+          </>
+        )}
       </ContentWrapper>
 
-      {problem?.example.map((v, idx) => (
+      {problem?.example?.map((v, idx) => (
         <ExampleWrapper key={idx}>
           <ExampleNumber>예제 {idx + 1}</ExampleNumber>
           {v.sample_explain && (
@@ -109,8 +117,13 @@ const ExampleWrapper = styled(ContentWrapper)`
 
 const Content = styled.div`
   white-space: pre-wrap;
-  ${typo.body3};
+  ${typo.body2};
   color: ${({ theme }) => theme.text.f1};
+
+  div,
+  p {
+    white-space: pre-line;
+  }
 `;
 
 type Props = {

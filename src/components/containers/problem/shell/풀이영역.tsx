@@ -2,27 +2,51 @@ import styled, { useTheme } from 'styled-components';
 import { useState, useEffect, useRef } from 'react';
 import MonacoEditor, { OnMount } from '@monaco-editor/react';
 import Loading from 'components/atoms/Loading';
+import { FillButton } from 'tds/components/buttons';
 // componentss
 import Badge from 'components/presenters/problem/shell/Badge';
+// api
+import { useSubmitProblemMutation } from 'api/problem';
+// hooks
+import useSnackbar from 'hooks/dom/useSnackbar';
 // utils
 import { getCookieFromClient } from 'utils/helpers/cookie';
+import { typo } from 'tds';
 
-const 풀이영역 = ({ initCode, onChangeValue }: Props) => {
+const 풀이영역 = ({ problemId, initCode, onChangeValue }: Props) => {
   const currentTheme = useTheme();
 
   const editorRef = useRef(null);
   const [code, setCode] = useState('');
 
-  const onClick = () => {
-    const target: any = document.querySelector('[contenteditable]');
-    if (!target) {
-      return;
-    }
+  const { mutate: submitMutate, status: submitStatus } = useSubmitProblemMutation();
 
-    target.focus();
+  const { initSnackbar } = useSnackbar();
+
+  const onSubmit = () => {
+    submitMutate(
+      { problemId, code },
+      {
+        onSuccess: data => {
+          if (data) {
+            initSnackbar({
+              type: 'Success',
+              title: 'CLEAR',
+              message: '축하합니다! 정답입니다!',
+            });
+          } else {
+            initSnackbar({
+              type: 'Danger',
+              title: 'WRONG',
+              message: '테스트 케이스에 통과하지 못하였습니다.',
+            });
+          }
+        },
+      },
+    );
   };
 
-  const onMoutEditor: OnMount = (editor, monaco) => {
+  const onMountEditor: OnMount = (editor, monaco) => {
     editorRef.current = editor;
 
     monaco.editor.defineTheme('trainer-light', {
@@ -55,15 +79,19 @@ const 풀이영역 = ({ initCode, onChangeValue }: Props) => {
     if (initCode) {
       setCode(initCode);
     } else {
-      setCode(`def add(a, b):\n    return a + b\n}`);
+      setCode(`def add(a, b):\n    return a + b`);
     }
   }, [initCode]);
 
   return (
-    <Wrapper onClick={onClick}>
-      <BadgeWrapper>
-        <Badge text="쿼리 작성" />
-      </BadgeWrapper>
+    <Wrapper>
+      <TopWrapper>
+        <Badge text="코드 작성" />
+        <SubmitButton size="ExtraSmall" onClick={onSubmit} disabled={submitStatus === 'loading'}>
+          {submitStatus !== 'loading' && '제출하기'}
+          {submitStatus === 'loading' && '제출 중'}
+        </SubmitButton>
+      </TopWrapper>
 
       <EditorWrapper>
         <MonacoEditor
@@ -84,7 +112,7 @@ const 풀이영역 = ({ initCode, onChangeValue }: Props) => {
               enabled: false,
             },
           }}
-          onMount={onMoutEditor}
+          onMount={onMountEditor}
         />
       </EditorWrapper>
     </Wrapper>
@@ -101,9 +129,25 @@ const Wrapper = styled.section`
   cursor: text;
 `;
 
-const BadgeWrapper = styled.div`
-  padding: 20px 20px 0 20px;
+const SubmitButton = styled(FillButton)``;
+const TopWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 20px 0 20px;
   margin-bottom: 16px;
+
+  ${SubmitButton} {
+    flex: 0 0 auto;
+    height: 32px;
+    ${typo.badge}
+    color: ${({ theme }) => theme.text.f2};
+
+    &:disabled {
+      background-color: transparent;
+      color: ${({ theme }) => theme.text.f4};
+    }
+  }
 `;
 
 const EditorWrapper = styled.div`
@@ -113,6 +157,7 @@ const EditorWrapper = styled.div`
 `;
 
 type Props = {
+  problemId: string;
   initCode?: string;
   onChangeValue: (value: string) => void;
 };
