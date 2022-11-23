@@ -53,7 +53,17 @@ const ProlbemPage = () => {
         <ShellWrapper>
           <ResizableArea
             left={<문제영역 problemId={problemId} />}
-            right={<풀이영역 problemId={problemId} initCode={''} onChangeValue={onChangeValue} />}
+            right={
+              <>
+                {problemData ? (
+                  <풀이영역
+                    problemId={problemId}
+                    initCode={problemData?.result.code ?? ''}
+                    onChangeValue={onChangeValue}
+                  />
+                ) : null}
+              </>
+            }
           />
         </ShellWrapper>
       </Wrapper>

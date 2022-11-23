@@ -5,13 +5,34 @@ import type { AxiosError } from 'axios';
 import type * as types from 'types/api/problem';
 
 /**
- * 내가 가장 최근 푼 문제 반환
+ * 내가 푼 문제 반환
  * @query
  * @version 1
  */
 export const useSolvedProblemQuery = (props?: Select<types.SolvedProblemQuery, 'Props'>) => {
   return useQuery<Select<types.SolvedProblemQuery, 'Response'>, AxiosError>(
-    ['useSolvedProblemQuery'],
+    ['useSolvedProblemQuery', props?.limit],
+    () =>
+      request.get(`/api/v1/problems/me`, {
+        params: {
+          skip: props?.skip,
+          limit: props?.limit,
+        },
+      }),
+    { ...props?.options },
+  );
+};
+
+/**
+ * 내가 가장 최근 푼 문제 반환
+ * @query
+ * @version 1
+ */
+export const useLastlySolvedProblemQuery = (
+  props?: Select<types.LastlySolvedProblemQuery, 'Props'>,
+) => {
+  return useQuery<Select<types.LastlySolvedProblemQuery, 'Response'>, AxiosError>(
+    ['useLastlySolvedProblemQuery'],
     () => request.get(`/api/v1/problems/me/latest`),
     { ...props?.options },
   );
@@ -79,6 +100,7 @@ export const useHotUserProblemQuery = (props?: Select<types.HotUserProblemQuery,
       request.get(`/api/v1/problems/hot`, {
         params: {
           feed: props?.type,
+          count: props?.count,
         },
       }),
     { ...props?.options },
@@ -96,6 +118,8 @@ export const useColdUserProblemQuery = (props?: Select<types.ColdUserProblemQuer
     () => {
       const params = {
         feed: props?.type,
+        // count: props?.count,
+        count: 10,
       };
       if (props?.type === 'algorithm') {
         Object.assign(params, { content: props.content });

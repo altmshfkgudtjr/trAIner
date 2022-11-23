@@ -27,6 +27,7 @@ const ProblemGroupPage = () => {
   const { data: problemList } = useColdUserProblemQuery({
     type: 'algorithm',
     content: algorithmType,
+    count: 30,
   });
 
   return (

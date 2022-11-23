@@ -19,11 +19,8 @@ const HomePage = () => {
           <EffectTitle>트레이너</EffectTitle> 로 매듭짓다<span>.</span>
           <br />
           <br />
-          <Link href="/curriculum" style={{ display: 'flex' }}>
-            <TextButton size="Large">커리큘럼 바로가기</TextButton>
-          </Link>
           <Link href="/problems" style={{ display: 'flex' }}>
-            <TextButton size="Large">알고리즘 둘러보기</TextButton>
+            <Button size="Large">문제 추천받기</Button>
           </Link>
         </Title>
       </Section>
@@ -104,6 +101,14 @@ const ImageWrapper = styled.div`
     min-width: 866px;
     height: 154px;
   }
+`;
+
+const Button = styled(TextButton)`
+  flex: 0 auto;
+  width: 140px;
+  margin: auto;
+  background-color: ${({ theme }) => theme.primary};
+  color: #fff;
 `;
 
 export default HomePage;

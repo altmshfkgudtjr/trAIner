@@ -1,7 +1,11 @@
 import styled from 'styled-components';
 import { useRef } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 // components
 import Layout from 'components/layouts';
+import CTR_Chart from 'components/containers/charts/CTR';
+import Hit_Chart from 'components/containers/charts/Hit';
+import Cold_Chart from 'components/containers/charts/Cold';
 // api
 import * as adminAPI from 'api/admin';
 // hooks
@@ -19,17 +23,20 @@ const AdminPage = () => {
 
   const { MetaTitle } = useMetaData();
   const { ValidAuthProvider } = useAuthWall({ isRedirect: true });
+  const queryClient = useQueryClient();
 
-  const { data: ctrData } = adminAPI.useCTR_threshold_query();
-  const { mutate: ctrMutate } = adminAPI.useCTR_threshold_mutation();
-  const { data: deepData } = adminAPI.useDeep_threshold_query();
-  const { mutate: deepMutate } = adminAPI.useDeep_threshold_mutation();
-  const { data: hotRandomData } = adminAPI.useHotuser_random_query();
-  const { mutate: hotRandomMutate } = adminAPI.useHotuser_random_mutation();
-  const { data: topicSimilarData } = adminAPI.useTopic_similarity_query();
-  const { mutate: topicSimilarMutate } = adminAPI.useTopic_similarity_mutation();
-  const { data: coldToHotData } = adminAPI.useColdToHotQuery();
-  const { mutate: coldToHotMutate } = adminAPI.useColdToHotMutation();
+  const { data: ctrData } = adminAPI.useCTR_threshold_query({ options: { cacheTime: 0 } });
+  // const { mutate: ctrMutate } = adminAPI.useCTR_threshold_mutation();
+  const { data: deepData } = adminAPI.useDeep_threshold_query({ options: { cacheTime: 0 } });
+  // const { mutate: deepMutate } = adminAPI.useDeep_threshold_mutation();
+  const { data: hotRandomData } = adminAPI.useHotuser_random_query({ options: { cacheTime: 0 } });
+  // const { mutate: hotRandomMutate } = adminAPI.useHotuser_random_mutation();
+  const { data: topicSimilarData } = adminAPI.useTopic_similarity_query({
+    options: { cacheTime: 0 },
+  });
+  // const { mutate: topicSimilarMutate } = adminAPI.useTopic_similarity_mutation();
+  const { data: coldToHotData } = adminAPI.useColdToHotQuery({ options: { cacheTime: 0 } });
+  // const { mutate: coldToHotMutate } = adminAPI.useColdToHotMutation();
 
   return (
     <>
@@ -38,7 +45,18 @@ const AdminPage = () => {
       <Background>
         <ValidAuthProvider>
           <Wrapper>
-            <Name>관리자 페이지</Name>
+            <Name>지표 차트</Name>
+            <ChartWrapper>
+              <CTR_Chart />
+            </ChartWrapper>
+            <ChartWrapper>
+              <Hit_Chart />
+            </ChartWrapper>
+            <ChartWrapper>
+              <Cold_Chart />
+            </ChartWrapper>
+
+            <Name>조정값 설정</Name>
 
             {ctrData?.result && (
               <Section>
@@ -54,7 +72,8 @@ const AdminPage = () => {
                         return;
                       }
                       ctrRef.current.innerText = e.target.value;
-                      ctrMutate({ value: parseInt(e.target.value, 10) });
+                      // ctrMutate({ value: parseInt(e.target.value, 10) });
+                      queryClient.invalidateQueries(['useCTR_threshold_query']);
                     }}
                     defaultValue={ctrData?.result ?? 0}
                   />
@@ -63,105 +82,101 @@ const AdminPage = () => {
               </Section>
             )}
 
-            <Section>
-              {deepData?.result && (
-                <Section>
-                  <Title>Deep Model 기준 임계치</Title>
-                  <RangeWrapper>
-                    <Range
-                      type="range"
-                      min={0}
-                      max={10}
-                      step={1}
-                      onChange={e => {
-                        if (!deepRef.current) {
-                          return;
-                        }
-                        deepRef.current.innerText = e.target.value;
-                        deepMutate({ value: parseInt(e.target.value, 10) });
-                      }}
-                      defaultValue={deepData?.result ?? 0}
-                    />
-                    <div ref={deepRef}>{deepData?.result ?? 0}</div>
-                  </RangeWrapper>
-                </Section>
-              )}
-            </Section>
+            {deepData?.result && (
+              <Section>
+                <Title>Deep Model 기준 임계치</Title>
+                <RangeWrapper>
+                  <Range
+                    type="range"
+                    min={0}
+                    max={10}
+                    step={1}
+                    onChange={e => {
+                      if (!deepRef.current) {
+                        return;
+                      }
+                      deepRef.current.innerText = e.target.value;
+                      // deepMutate({ value: parseInt(e.target.value, 10) });
+                      queryClient.invalidateQueries(['useCTR_threshold_query']);
+                    }}
+                    defaultValue={deepData?.result ?? 0}
+                  />
+                  <div ref={deepRef}>{deepData?.result ?? 0}</div>
+                </RangeWrapper>
+              </Section>
+            )}
 
-            <Section>
-              {hotRandomData?.result && (
-                <Section>
-                  <Title>Hot User 추천 Score 가중치</Title>
-                  <RangeWrapper>
-                    <Range
-                      type="range"
-                      min={0}
-                      max={5}
-                      step={0.5}
-                      onChange={e => {
-                        if (!hotRef.current) {
-                          return;
-                        }
-                        hotRef.current.innerText = e.target.value;
-                        hotRandomMutate({ value: parseInt(e.target.value, 10) });
-                      }}
-                      defaultValue={hotRandomData?.result ?? 0}
-                    />
-                    <div ref={hotRef}>{hotRandomData?.result ?? 0}</div>
-                  </RangeWrapper>
-                </Section>
-              )}
-            </Section>
+            {hotRandomData?.result && (
+              <Section>
+                <Title>Hot User 추천 Score 가중치</Title>
+                <RangeWrapper>
+                  <Range
+                    type="range"
+                    min={0}
+                    max={5}
+                    step={0.5}
+                    onChange={e => {
+                      if (!hotRef.current) {
+                        return;
+                      }
+                      hotRef.current.innerText = e.target.value;
+                      // hotRandomMutate({ value: parseInt(e.target.value, 10) });
+                      queryClient.invalidateQueries(['useCTR_threshold_query']);
+                    }}
+                    defaultValue={hotRandomData?.result ?? 0}
+                  />
+                  <div ref={hotRef}>{hotRandomData?.result ?? 0}</div>
+                </RangeWrapper>
+              </Section>
+            )}
 
-            <Section>
-              {topicSimilarData?.result && (
-                <Section>
-                  <Title>Topic Model 유사도 가중치</Title>
-                  <RangeWrapper>
-                    <Range
-                      type="range"
-                      min={0}
-                      max={10}
-                      step={1}
-                      onChange={e => {
-                        if (!similarityRef.current) {
-                          return;
-                        }
-                        similarityRef.current.innerText = e.target.value;
-                        topicSimilarMutate({ value: parseInt(e.target.value, 10) });
-                      }}
-                      defaultValue={topicSimilarData?.result ?? 0}
-                    />
-                    <div ref={similarityRef}>{topicSimilarData?.result ?? 0}</div>
-                  </RangeWrapper>
-                </Section>
-              )}
-            </Section>
+            {topicSimilarData?.result && (
+              <Section>
+                <Title>Topic Model 유사도 가중치</Title>
+                <RangeWrapper>
+                  <Range
+                    type="range"
+                    min={0}
+                    max={10}
+                    step={1}
+                    onChange={e => {
+                      if (!similarityRef.current) {
+                        return;
+                      }
+                      similarityRef.current.innerText = e.target.value;
+                      // topicSimilarMutate({ value: parseInt(e.target.value, 10) });
+                      queryClient.invalidateQueries(['useCTR_threshold_query']);
+                    }}
+                    defaultValue={topicSimilarData?.result ?? 0}
+                  />
+                  <div ref={similarityRef}>{topicSimilarData?.result ?? 0}</div>
+                </RangeWrapper>
+              </Section>
+            )}
 
-            <Section>
-              {coldToHotData?.result && (
-                <Section>
-                  <Title>Cold & Hot 경계 기준</Title>
-                  <RangeWrapper>
-                    <Range
-                      type="range"
-                      min={0}
-                      max={10}
-                      step={1}
-                      onChange={e => {
-                        if (!standardRef.current) {
-                          return;
-                        }
-                        standardRef.current.innerText = e.target.value;
-                        coldToHotMutate({ value: parseInt(e.target.value, 10) });
-                      }}
-                      defaultValue={coldToHotData?.result ?? 0}
-                    />
-                    <div ref={standardRef}>{coldToHotData?.result ?? 0}</div>
-                  </RangeWrapper>
-                </Section>
-              )}
-            </Section>
+            {coldToHotData?.result && (
+              <Section>
+                <Title>Cold & Hot 경계 기준</Title>
+                <RangeWrapper>
+                  <Range
+                    type="range"
+                    min={0}
+                    max={10}
+                    step={1}
+                    onChange={e => {
+                      if (!standardRef.current) {
+                        return;
+                      }
+                      standardRef.current.innerText = e.target.value;
+                      // coldToHotMutate({ value: parseInt(e.target.value, 10) });
+                      queryClient.invalidateQueries(['useCTR_threshold_query']);
+                    }}
+                    defaultValue={coldToHotData?.result ?? 0}
+                  />
+                  <div ref={standardRef}>{coldToHotData?.result ?? 0}</div>
+                </RangeWrapper>
+              </Section>
+            )}
           </Wrapper>
         </ValidAuthProvider>
       </Background>
@@ -178,12 +193,14 @@ const Background = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
+  padding: 80px 0 200px;
+  background-color: ${({ theme }) => theme.background.bg4};
 `;
 
 const Wrapper = styled.div`
   width: calc(100% - 32px);
-  max-width: 600px;
+  max-width: 800px;
   height: fit-content;
   margin: auto;
   padding: 32px 16px;
@@ -197,10 +214,19 @@ const Wrapper = styled.div`
   }
 `;
 
-const Name = styled.h1`
-  ${typo.headline1};
+const ChartWrapper = styled.div`
   margin-bottom: 40px;
-  color: ${({ theme }) => theme.text.f2};
+`;
+
+const Name = styled.h1`
+  display: inline-block;
+  padding: 4px 8px;
+  margin: 40px 0;
+  background-color: ${({ theme }) => theme.semantic.info};
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  ${typo.headline1};
 `;
 
 const Title = styled.h2``;

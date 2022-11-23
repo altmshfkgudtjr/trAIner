@@ -2,7 +2,17 @@ import type { BaseQuery, BaseMutation } from 'types/api';
 
 /* ================================================== */
 
-export type SolvedProblemQuery = BaseQuery<{}, Problem>;
+export type SolvedProblemQuery = BaseQuery<
+  {
+    skip: number;
+    limit: number;
+  },
+  SolvedProblem[]
+>;
+
+/* ================================================== */
+
+export type LastlySolvedProblemQuery = BaseQuery<{}, Problem>;
 
 /* ================================================== */
 
@@ -31,7 +41,11 @@ export type SubmitProblemMutation = BaseMutation<
     problemId: string;
     code: string;
   },
-  {}
+  {
+    executionTime: number;
+    result: boolean;
+    resultInfo: string;
+  }
 >;
 
 /* ================================================== */
@@ -39,6 +53,7 @@ export type SubmitProblemMutation = BaseMutation<
 export type HotUserProblemQuery = BaseQuery<
   {
     type: 'click' | 'vulnerable' | 'similar' | 'unfamiliar';
+    count: number;
   },
   Problem[]
 >;
@@ -48,6 +63,7 @@ export type HotUserProblemQuery = BaseQuery<
 export type ColdUserProblemQuery = BaseQuery<
   {
     type: 'vulnerable' | 'popular' | 'click' | 'algorithm';
+    count: number;
     /** type이 algorithm일 때에만 작동 */
     content?: Algorithm;
   },
@@ -97,6 +113,18 @@ export type Problem = {
   level: number;
   /** 태그 목록 */
   tags: string[];
+  // 내가 풀었던 코드
+  code: string | null;
+};
+
+/**
+ * 풀었던 문제 타입
+ */
+export type SolvedProblem = Problem & {
+  result: boolean;
+  resultInfo: string;
+  executionTime: number; // ms
+  created_at: string;
 };
 
 /** 알고리즘 타입 */

@@ -94,7 +94,8 @@ const Background = styled.div`
   top: 0;
   left: 0;
   z-index: ${zIndex.modal};
-  background-color: rgba(0, 0, 0, 0.65);
+  background-color: ${({ theme }) =>
+    theme.themeType === 'light' ? 'rgba(0, 0, 0, 0.65)' : 'rgba(255, 255, 255, 0.2)'};
   animation: 0.1s ${animations.fadeIn} ease;
 `;
 
@@ -118,6 +119,7 @@ const ModalWrapper = styled.dialog<{ isClose: boolean; options: ModalOptions }>`
         return 'auto';
     }
   }};
+  border-radius: 24px;
   ${({ isClose, options }) => {
     if (isClose) {
       if (options.position === 'center') {

@@ -9,6 +9,7 @@ import Badge from 'components/presenters/problem/shell/Badge';
 import { useSubmitProblemMutation } from 'api/problem';
 // hooks
 import useSnackbar from 'hooks/dom/useSnackbar';
+import useModal from 'hooks/dom/useModal';
 // utils
 import { getCookieFromClient } from 'utils/helpers/cookie';
 import { typo } from 'tds';
@@ -22,13 +23,22 @@ const 풀이영역 = ({ problemId, initCode, onChangeValue }: Props) => {
   const { mutate: submitMutate, status: submitStatus } = useSubmitProblemMutation();
 
   const { initSnackbar } = useSnackbar();
+  const { pushModal } = useModal();
 
   const onSubmit = () => {
     submitMutate(
       { problemId, code },
       {
         onSuccess: data => {
-          if (data) {
+          pushModal({
+            name: 'SubmitResultModal',
+            args: {
+              result: data.result.result,
+              executionTime: data.result.executionTime,
+            },
+          });
+
+          if (data.result.result) {
             initSnackbar({
               type: 'Success',
               title: 'CLEAR',
