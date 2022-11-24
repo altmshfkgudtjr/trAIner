@@ -80,6 +80,7 @@ export const useSignOutMutation = (props?: Select<types.SignOutMutation, 'Props'
       removeLocalStorage(REFRESH_TOKEN);
       removeSessionStorage(REFRESH_TOKEN);
       props?.options?.onSuccess && props.options.onSuccess(res, ...rest);
+      window.location.href = '/';
     },
     onError: (res, ...rest) => {
       removeLocalStorage(REFRESH_TOKEN);

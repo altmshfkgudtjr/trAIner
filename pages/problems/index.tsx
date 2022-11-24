@@ -43,18 +43,30 @@ const ProlbemListPage = () => {
   const { data: similarProblemList, isLoading: isLoadingSimilar } = useHotUserProblemQuery({
     type: 'similar',
     count: 30,
+    options: {
+      enabled: !!user?.isHotUser,
+    },
   });
   const { data: vulerableProblemList, isLoading: isLoadingVulnerable } = useHotUserProblemQuery({
     type: 'vulnerable',
     count: 30,
+    options: {
+      enabled: !!user?.isHotUser,
+    },
   });
   const { data: unfamiliarProblemList, isLoading: isLoadingUnfamiliar } = useHotUserProblemQuery({
     type: 'unfamiliar',
     count: 30,
+    options: {
+      enabled: !!user?.isHotUser,
+    },
   });
   const { data: clickProblemList, isLoading: isLoadingClick } = useHotUserProblemQuery({
     type: 'click',
     count: 30,
+    options: {
+      enabled: !!user?.isHotUser,
+    },
   });
   const { data: wrongProblemList, isLoading: isLoadingWrong } = useColdUserProblemQuery({
     type: 'vulnerable',
@@ -75,37 +87,43 @@ const ProlbemListPage = () => {
 
       <ValidAuthProvider>
         <Wrapper>
-          <section>
-            <Title>
-              {!isLoadingSolvedProblem && (
-                <>
-                  최근에 푼
-                  <Link href={`/problem/${solvedProblem?.result.problemId}`}>
-                    <mark className="noselect">{solvedProblem?.result.titleKo}</mark>
-                  </Link>
-                  과 관련된 문제들이에요!
-                </>
-              )}
-            </Title>
+          {solvedProblem?.result && (
+            <section>
+              <Title>
+                {!isLoadingSolvedProblem && (
+                  <>
+                    최근에 푼
+                    <Link href={`/problem/${solvedProblem?.result.problemId}`}>
+                      <mark className="noselect">{solvedProblem?.result.titleKo}</mark>
+                    </Link>
+                    과 관련된 문제들이에요!
+                  </>
+                )}
+              </Title>
 
-            <CardWrapper>
-              {isLoadingCurriculum && <Loading />}
-              {curriculum?.result?.map(problem => (
-                <ProblemCard key={problem.problemId} problem={problem} />
-              )) ?? null}
-            </CardWrapper>
-          </section>
+              <CardWrapper>
+                {isLoadingCurriculum && <Loading />}
+                {curriculum?.result?.map(problem => (
+                  <ProblemCard key={problem.problemId} problem={problem} />
+                )) ?? null}
+              </CardWrapper>
+            </section>
+          )}
 
-          <section>
-            <Title>최근에 풀었던 문제들과 연관도가 높아요</Title>
+          {!!user?.isHotUser && (
+            <section>
+              <Title>
+                최근에 풀었던 문제들과 <strong>연관도가 높아요</strong>
+              </Title>
 
-            <CardWrapper>
-              {isLoadingSimilar && <Loading />}
-              {similarProblemList?.result?.map(problem => (
-                <ProblemCard key={problem.problemId} problem={problem} />
-              )) ?? null}
-            </CardWrapper>
-          </section>
+              <CardWrapper>
+                {isLoadingSimilar && <Loading />}
+                {similarProblemList?.result?.map(problem => (
+                  <ProblemCard key={problem.problemId} problem={problem} />
+                )) ?? null}
+              </CardWrapper>
+            </section>
+          )}
 
           <section>
             <Title>알고리즘 집중 트레이닝</Title>
@@ -147,42 +165,54 @@ const ProlbemListPage = () => {
             </CardWrapper>
           </section>
 
-          <section>
-            <Title>AI의 취약점 예측 진단 문제집</Title>
+          {!!user?.isHotUser && (
+            <section>
+              <Title>
+                AI의 <span>취약점</span> 예측 진단 문제집
+              </Title>
 
-            <CardWrapper>
-              {isLoadingVulnerable && <Loading />}
-              {vulerableProblemList?.result?.map(problem => (
-                <ProblemCard key={problem.problemId} problem={problem} />
-              )) ?? null}
-            </CardWrapper>
-          </section>
+              <CardWrapper>
+                {isLoadingVulnerable && <Loading />}
+                {vulerableProblemList?.result?.map(problem => (
+                  <ProblemCard key={problem.problemId} problem={problem} />
+                )) ?? null}
+              </CardWrapper>
+            </section>
+          )}
 
-          <section>
-            <Title>잊고 있었던 문제 유형들</Title>
+          {!!user?.isHotUser && (
+            <section>
+              <Title>잊고 있었던 문제 유형들</Title>
 
-            <CardWrapper>
-              {isLoadingUnfamiliar && <Loading />}
-              {unfamiliarProblemList?.result?.map(problem => (
-                <ProblemCard key={problem.problemId} problem={problem} />
-              )) ?? null}
-            </CardWrapper>
-          </section>
+              <CardWrapper>
+                {isLoadingUnfamiliar && <Loading />}
+                {unfamiliarProblemList?.result?.map(problem => (
+                  <ProblemCard key={problem.problemId} problem={problem} />
+                )) ?? null}
+              </CardWrapper>
+            </section>
+          )}
 
-          <section>
-            <Title>당신을 위한 맞춤 문제 피드</Title>
+          {!!user?.isHotUser && (
+            <section>
+              <Title>
+                당신을 위한 <strong>맞춤 문제</strong> 피드
+              </Title>
 
-            <CardWrapper>
-              {isLoadingClick && <Loading />}
-              {clickProblemList?.result?.map(problem => (
-                <ProblemCard key={problem.problemId} problem={problem} />
-              )) ?? null}
-            </CardWrapper>
-          </section>
+              <CardWrapper>
+                {isLoadingClick && <Loading />}
+                {clickProblemList?.result?.map(problem => (
+                  <ProblemCard key={problem.problemId} problem={problem} />
+                )) ?? null}
+              </CardWrapper>
+            </section>
+          )}
 
           {!!wrongProblemList?.result && (
             <section>
-              <Title>생각보다 많이 틀리는 문제들</Title>
+              <Title>
+                생각보다 <span>많이 틀리는 </span> 문제들
+              </Title>
 
               <CardWrapper>
                 {isLoadingWrong && <Loading />}
@@ -208,7 +238,9 @@ const ProlbemListPage = () => {
 
           {!!trialProblemList?.result && (
             <section>
-              <Title>AI의 추천! 유저들의 예측 클릭률이 높아요</Title>
+              <Title>
+                AI의 추천! 유저들의 <strong>예측 클릭률이 높아요</strong>
+              </Title>
 
               <CardWrapper>
                 {isLoadingTrial && <Loading />}
@@ -267,6 +299,14 @@ const Title = styled.h1`
     ${lib.onlyHover(css`
       background-color: #0e60c2;
     `)}
+  }
+
+  strong {
+    color: ${({ theme }) => theme.semantic.info};
+  }
+
+  span {
+    color: ${({ theme }) => theme.semantic.danger};
   }
 
   ${mediaQuery.medium} {

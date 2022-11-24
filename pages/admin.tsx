@@ -45,16 +45,15 @@ const AdminPage = () => {
       <Background>
         <ValidAuthProvider>
           <Wrapper>
-            <Name>지표 차트</Name>
-            <ChartWrapper>
-              <CTR_Chart />
-            </ChartWrapper>
+            <Name>실시간 지표</Name>
             <ChartWrapper>
               <Hit_Chart />
             </ChartWrapper>
             <ChartWrapper>
+              <CTR_Chart />
               <Cold_Chart />
             </ChartWrapper>
+            <ChartWrapper></ChartWrapper>
 
             <Name>조정값 설정</Name>
 
@@ -215,6 +214,10 @@ const Wrapper = styled.div`
 `;
 
 const ChartWrapper = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 40px;
   margin-bottom: 40px;
 `;
 
@@ -225,7 +228,6 @@ const Name = styled.h1`
   background-color: ${({ theme }) => theme.semantic.info};
   color: #fff;
   border-radius: 8px;
-  cursor: pointer;
   ${typo.headline1};
 `;
 

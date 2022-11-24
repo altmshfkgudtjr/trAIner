@@ -5,6 +5,8 @@ import Link from 'next/link';
 // components
 import Logo from 'components/atoms/Logo';
 import { TextButton } from 'tds/components/buttons';
+// api
+import { useSignOutMutation } from 'api/user';
 // store
 import themeState from 'store/system/theme';
 // hooks
@@ -21,7 +23,11 @@ const MobileMainHeader = ({ profile }: Props) => {
   const theme = useRecoilValue(themeState);
   const headerRef = useRef(null);
 
+  const { mutate: logoutMutate } = useSignOutMutation();
+
   useScrollHeader(headerRef);
+
+  const onLogout = () => logoutMutate({});
 
   return (
     <>
@@ -31,16 +37,27 @@ const MobileMainHeader = ({ profile }: Props) => {
 
           <div>
             {profile && (
-              <Link href="/profile">
+              <>
+                <Link href="/profile">
+                  <TextButton
+                    size="ExtraSmall"
+                    color={
+                      theme.mode === 'Light' ? currentTheme.semantic.white : currentTheme.primary
+                    }
+                  >
+                    {profile.userId}
+                  </TextButton>
+                </Link>
                 <TextButton
                   size="ExtraSmall"
                   color={
                     theme.mode === 'Light' ? currentTheme.semantic.white : currentTheme.primary
                   }
+                  onClick={onLogout}
                 >
-                  {profile.userId}
+                  로그아웃
                 </TextButton>
-              </Link>
+              </>
             )}
 
             {!profile && (

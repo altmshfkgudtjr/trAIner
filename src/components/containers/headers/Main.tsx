@@ -4,6 +4,8 @@ import Link from 'next/link';
 // components
 import { TextButton } from 'tds/components/buttons';
 import Logo from 'components/atoms/Logo';
+// api
+import { useSignOutMutation } from 'api/user';
 // store
 import themeState from 'store/system/theme';
 // styles
@@ -16,6 +18,10 @@ const MainHeader = ({ profile }: Props) => {
   const currentTheme = useTheme();
   const theme = useRecoilValue(themeState);
 
+  const { mutate: logoutMutate } = useSignOutMutation();
+
+  const onLogout = () => logoutMutate({});
+
   return (
     <Wrapper>
       <ContentWrapper>
@@ -23,14 +29,25 @@ const MainHeader = ({ profile }: Props) => {
 
         <div>
           {profile && (
-            <Link href="/profile">
+            <>
+              <Link href="/profile">
+                <TextButton
+                  size="ExtraSmall"
+                  color={
+                    theme.mode === 'Light' ? currentTheme.semantic.white : currentTheme.primary
+                  }
+                >
+                  {profile.userId}
+                </TextButton>
+              </Link>
               <TextButton
                 size="ExtraSmall"
                 color={theme.mode === 'Light' ? currentTheme.semantic.white : currentTheme.primary}
+                onClick={onLogout}
               >
-                {profile.userId}
+                로그아웃
               </TextButton>
-            </Link>
+            </>
           )}
 
           {!profile && (

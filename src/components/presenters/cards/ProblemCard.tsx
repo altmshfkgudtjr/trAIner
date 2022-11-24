@@ -104,13 +104,13 @@ const BadgeWrapper = styled.div`
   gap: 8px;
   margin-bottom: 8px;
   ${typo.badge};
-  color: ${({ theme }) => theme.text.f4};
+  color: ${({ theme }) => (theme.themeType === 'light' ? theme.text.f3 : theme.text.f4)};
 `;
 
 const Name = styled.div`
   margin-top: 12px;
   ${typo.subtitle3};
-  color: ${({ theme }) => theme.text.f4};
+  color: ${({ theme }) => (theme.themeType === 'light' ? theme.text.f3 : theme.text.f4)};
 `;
 
 const TagWrapper = styled.div`
@@ -134,7 +134,7 @@ const Count = styled.div`
   text-align: right;
   ${typo.value2};
   font-weight: 400;
-  color: ${({ theme }) => theme.text.f4};
+  color: ${({ theme }) => (theme.themeType === 'light' ? theme.text.f3 : theme.text.f4)};
 
   span {
     margin-right: 1px;

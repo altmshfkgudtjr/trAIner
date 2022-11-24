@@ -22,16 +22,16 @@ const Hit_Chart = () => {
       posdition: 'none',
     },
     fontColor: currentTheme.text.f2,
-    colors: ['#4f0eb0', '#8655cf'],
+    colors: ['#cc170a', '#ea867b'],
   };
 
   const data = [
     ['Date', '문제를 맞춘 수', '총 취약점 문제 시도수'],
-    ['2022.01', 12, 223],
-    ['2022.02', 12, 123],
-    ['2022.03', 13, 322],
-    ['2022.04', 13, 222],
-    ['2022.05', 13, 227],
+    ['2022.01', 122, 223],
+    ['2022.02', 132, 123],
+    ['2022.03', 153, 322],
+    ['2022.04', 123, 222],
+    ['2022.05', 83, 227],
   ];
 
   return (
@@ -43,11 +43,14 @@ const Hit_Chart = () => {
 };
 
 const Wrapper = styled.section`
+  flex: 1 1 auto;
   position: relative;
+  width: 50%;
 `;
 
 const Title = styled.h1`
   ${typo.headline3};
+  font-weight: 800;
   color: ${({ theme }) => theme.text.f3};
 `;
 

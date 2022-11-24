@@ -76,7 +76,8 @@ const Wrapper = styled.div<{ color?: string }>`
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: ${({ theme }) =>
+      theme.themeType === 'dark' ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.4)'};
     z-index: 0;
   }
 
@@ -115,7 +116,7 @@ const Badge = styled.div`
   margin-bottom: 8px;
   border-radius: 4px;
   background-color: #8732c4;
-  color: ${({ theme }) => theme.text.f2};
+  color: ${({ theme }) => theme.semantic.white};
   ${typo.badge};
 `;
 

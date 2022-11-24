@@ -40,12 +40,12 @@ const Wrapper = styled.div`
   flex-direction: column;
   gap: 16px;
   max-width: 1080px;
-  padding-top: 32px;
+  padding-top: 16px;
   padding-bottom: 200px;
   margin: auto;
 
   ${mediaQuery.medium} {
-    padding-top: 80px;
+    padding-top: 40px;
   }
 `;
 

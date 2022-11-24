@@ -124,7 +124,7 @@ const SubmitTime = styled.p`
   color: ${({ theme }) => theme.text.f2};
 
   span {
-    color: ${({ theme }) => theme.text.f4};
+    color: ${({ theme }) => (theme.themeType === 'light' ? theme.text.f3 : theme.text.f4)};
   }
 `;
 
@@ -196,13 +196,13 @@ const BadgeWrapper = styled.div`
   gap: 8px;
   margin-bottom: 8px;
   ${typo.badge};
-  color: ${({ theme }) => theme.text.f4};
+  color: ${({ theme }) => (theme.themeType === 'light' ? theme.text.f3 : theme.text.f4)};
 `;
 
 const Name = styled.div`
   margin-top: 12px;
   ${typo.subtitle3};
-  color: ${({ theme }) => theme.text.f4};
+  color: ${({ theme }) => (theme.themeType === 'light' ? theme.text.f3 : theme.text.f4)};
 `;
 
 const TagWrapper = styled.div`
@@ -229,7 +229,7 @@ const Result = styled.div<{ isPass: boolean }>`
   ${typo.value2};
 
   p {
-    color: ${({ theme }) => theme.text.f4};
+    color: ${({ theme }) => (theme.themeType === 'light' ? theme.text.f3 : theme.text.f4)};
   }
 
   span {
