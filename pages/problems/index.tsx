@@ -165,17 +165,15 @@ const ProlbemListPage = () => {
             </CardWrapper>
           </section>
 
-          {!!user?.isHotUser && (
+          {!!popularProblemList?.result && (
             <section>
-              <Title>
-                AI의 <span>취약점</span> 예측 진단 문제집
-              </Title>
+              <Title>많은 유저들에게 사랑받고 있는 문제</Title>
 
               <CardWrapper>
-                {isLoadingVulnerable && <Loading />}
-                {vulerableProblemList?.result?.map(problem => (
+                {isLoadingPopular && <Loading />}
+                {popularProblemList?.result?.map(problem => (
                   <ProblemCard key={problem.problemId} problem={problem} />
-                )) ?? null}
+                ))}
               </CardWrapper>
             </section>
           )}
@@ -208,34 +206,6 @@ const ProlbemListPage = () => {
             </section>
           )}
 
-          {!!wrongProblemList?.result && (
-            <section>
-              <Title>
-                생각보다 <span>많이 틀리는 </span> 문제들
-              </Title>
-
-              <CardWrapper>
-                {isLoadingWrong && <Loading />}
-                {wrongProblemList?.result?.map(problem => (
-                  <ProblemCard key={problem.problemId} problem={problem} />
-                ))}
-              </CardWrapper>
-            </section>
-          )}
-
-          {!!popularProblemList?.result && (
-            <section>
-              <Title>많은 유저들에게 사랑받고 있는 문제</Title>
-
-              <CardWrapper>
-                {isLoadingPopular && <Loading />}
-                {popularProblemList?.result?.map(problem => (
-                  <ProblemCard key={problem.problemId} problem={problem} />
-                ))}
-              </CardWrapper>
-            </section>
-          )}
-
           {!!trialProblemList?.result && (
             <section>
               <Title>
@@ -245,6 +215,36 @@ const ProlbemListPage = () => {
               <CardWrapper>
                 {isLoadingTrial && <Loading />}
                 {trialProblemList?.result?.map(problem => (
+                  <ProblemCard key={problem.problemId} problem={problem} />
+                ))}
+              </CardWrapper>
+            </section>
+          )}
+
+          {!!user?.isHotUser && (
+            <section>
+              <Title>
+                AI의 <span>취약점</span> 예측 진단 문제집
+              </Title>
+
+              <CardWrapper>
+                {isLoadingVulnerable && <Loading />}
+                {vulerableProblemList?.result?.map(problem => (
+                  <ProblemCard key={problem.problemId} problem={problem} />
+                )) ?? null}
+              </CardWrapper>
+            </section>
+          )}
+
+          {!!wrongProblemList?.result && (
+            <section>
+              <Title>
+                생각보다 <span>많이 틀리는 </span> 문제들
+              </Title>
+
+              <CardWrapper>
+                {isLoadingWrong && <Loading />}
+                {wrongProblemList?.result?.map(problem => (
                   <ProblemCard key={problem.problemId} problem={problem} />
                 ))}
               </CardWrapper>
